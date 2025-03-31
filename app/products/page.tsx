@@ -34,7 +34,7 @@ export default function ProductsPage() {
         <div className="container">
           <div className="mb-8 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Our Products
+              "LA TIENDITA"
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Discover our selection of premium coffee and branded merchandise

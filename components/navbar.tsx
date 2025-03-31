@@ -1,21 +1,21 @@
 "use client"
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
 import { Menu } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import * as React from "react"
 
-import { cn } from "@/lib/utils"
+import { CartDrawer } from "@/components/cart-drawer"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { CartDrawer } from "@/components/cart-drawer"
+import { cn } from "@/lib/utils"
 
 const navItems = [
   { name: "Proyecto Gris", href: "/" },
-  { name: "Ventanita Café", href: "/ventanita" },
-  { name: "Trópico", href: "/tropico" },
-  { name: "Products", href: "/products" },
+  // { name: "Ventanita Café", href: "/ventanita" },
+  // { name: "Trópico", href: "/tropico" },
+  { name: "La Tiendita", href: "/products" },
 ]
 
 export default function Navbar() {
@@ -33,16 +33,27 @@ export default function Navbar() {
   // Determine the current theme based on the pathname
   const getNavbarClasses = () => {
     if (pathname === "/ventanita" || pathname.startsWith("/ventanita/")) {
-      return isScrolled ? "bg-green-50/80 backdrop-blur-md border-b border-green-100" : "bg-transparent"
+      return isScrolled
+        ? "bg-green-50/80 backdrop-blur-md border-b border-green-100"
+        : "bg-transparent"
     } else if (pathname === "/tropico" || pathname.startsWith("/tropico/")) {
-      return isScrolled ? "bg-white/80 backdrop-blur-md border-b border-gray-200" : "bg-transparent"
+      return isScrolled
+        ? "bg-white/80 backdrop-blur-md border-b border-gray-200"
+        : "bg-transparent"
     } else {
-      return isScrolled ? "bg-white/80 backdrop-blur-md border-b border-gray-200" : "bg-transparent"
+      return isScrolled
+        ? "bg-white/80 backdrop-blur-md border-b border-gray-200"
+        : "bg-transparent"
     }
   }
 
   return (
-    <header className={cn("fixed top-0 w-full z-50 transition-all duration-300", getNavbarClasses())}>
+    <header
+      className={cn(
+        "fixed top-0 w-full z-50 transition-all duration-300",
+        getNavbarClasses()
+      )}
+    >
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="text-xl font-medium">
           Proyecto Gris
@@ -58,11 +69,12 @@ export default function Navbar() {
                 "relative font-medium text-sm transition-colors hover:text-foreground/80",
                 pathname === item.href || pathname.startsWith(`${item.href}/`)
                   ? "text-foreground"
-                  : "text-foreground/60",
+                  : "text-foreground/60"
               )}
             >
               {item.name}
-              {(pathname === item.href || pathname.startsWith(`${item.href}/`)) && (
+              {(pathname === item.href ||
+                pathname.startsWith(`${item.href}/`)) && (
                 <motion.div
                   layoutId="navbar-indicator"
                   className="absolute -bottom-1 left-0 right-0 h-[2px] bg-foreground"
@@ -93,9 +105,10 @@ export default function Navbar() {
                     href={item.href}
                     className={cn(
                       "text-lg font-medium transition-colors hover:text-foreground/80",
-                      pathname === item.href || pathname.startsWith(`${item.href}/`)
+                      pathname === item.href ||
+                        pathname.startsWith(`${item.href}/`)
                         ? "text-foreground"
-                        : "text-foreground/60",
+                        : "text-foreground/60"
                     )}
                   >
                     {item.name}
@@ -109,4 +122,3 @@ export default function Navbar() {
     </header>
   )
 }
-
