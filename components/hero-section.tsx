@@ -1,8 +1,8 @@
 "use client"
 
-import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { ArrowDown } from "lucide-react"
+import { useRef } from "react"
 
 import Navbar from "@/components/navbar"
 
@@ -29,12 +29,8 @@ export default function HeroSection() {
         className="container relative z-10 flex flex-col items-center text-center"
       >
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900">
-          <span className="block">Proyecto</span>
-          <span className="block mt-2">Gris</span>
+          <span className="block">Proyecto Gris</span>
         </h1>
-        <p className="mt-6 max-w-lg text-lg text-gray-600">
-          Crafting exceptional coffee experiences through our brands Ventanita Café and Trópico
-        </p>
       </motion.div>
 
       <div className="absolute inset-0 -z-10">
@@ -53,4 +49,3 @@ export default function HeroSection() {
     </section>
   )
 }
-
