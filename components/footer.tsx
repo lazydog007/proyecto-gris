@@ -37,8 +37,8 @@ export default function Footer() {
         <div>
           <h3 className=" text-lg font-medium mb-4">Contacto</h3>
           <address className="not-italic text-sm text-muted-foreground">
-            <p>Email: hello@proyectogris.com</p>
-            <p className="mt-1">Phone: +1 (555) 123-4567</p>
+            <p>Email: info@ventanitacafe.com</p>
+            <p className="mt-1">Telefono: +584243352233</p>
           </address>
         </div>
 
@@ -75,7 +75,7 @@ export default function Footer() {
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} Proyecto Gris. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          {/* <div className="flex space-x-6 mt-4 md:mt-0">
             <Link
               href="/privacy"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -88,7 +88,7 @@ export default function Footer() {
             >
               Terms of Service
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

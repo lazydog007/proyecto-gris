@@ -1,20 +1,17 @@
 "use client"
 
 import { motion, useInView } from "framer-motion"
-import { ArrowRight } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
 import { useRef } from "react"
 
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 
 const brands = [
   {
     name: "Ventanita Café",
     description:
-      "A specialty coffee shop focused on exceptional espresso-based drinks and a curated coffee experience.",
-    image: "/placeholder.svg?height=600&width=800",
+      "Cafeteria Venezolana sirviendo puro cafe de especialidad en su maxima calidad.",
+    image: "/ventanita-logo.png?height=600&width=800",
     href: "/ventanita",
     color: "bg-green-50",
     textColor: "text-green-800",
@@ -24,8 +21,8 @@ const brands = [
   {
     name: "Trópico",
     description:
-      "A premium coffee brand with its own laboratory, dedicated to exploring the finest coffee flavors.",
-    image: "/placeholder.svg?height=600&width=800",
+      "Laboratorio del cafe, nuestra meta es llevar el cafe venezolano a estandares internacionales.",
+    image: "/tropico-logo.jpeg?height=600&width=800",
     href: "/tropico",
     color: "bg-gray-50",
     textColor: "text-gray-900",
@@ -97,7 +94,7 @@ export default function BrandShowcase() {
                   <p className={`mb-6 ${brand.textColor}/80`}>
                     {brand.description}
                   </p>
-                  <Button
+                  {/* <Button
                     asChild
                     variant="outline"
                     className={`${brand.textColor} border-current ${brand.hoverColor}`}
@@ -105,7 +102,7 @@ export default function BrandShowcase() {
                     <Link href={brand.href}>
                       Explore <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
-                  </Button>
+                  </Button> */}
                 </CardContent>
               </Card>
             </motion.div>
