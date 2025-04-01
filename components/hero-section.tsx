@@ -43,7 +43,7 @@ export default function HeroSection() {
         transition={{ delay: 1, duration: 0.5 }}
         className="absolute bottom-10 flex flex-col items-center"
       >
-        <p className="text-sm text-gray-500 mb-2">Discover our brands</p>
+        <p className="text-sm text-gray-500 mb-2">Conoce nuestras marcas</p>
         <ArrowDown className="h-5 w-5 animate-bounce text-gray-400" />
       </motion.div>
     </section>

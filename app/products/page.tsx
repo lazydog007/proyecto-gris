@@ -5,9 +5,8 @@ import Navbar from "@/components/navbar"
 import { ProductCard } from "@/components/product-card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { getCategories, products } from "@/lib/products"
-import { Filter } from "lucide-react"
 import { useState } from "react"
 
 export default function ProductsPage() {
@@ -36,10 +35,7 @@ export default function ProductsPage() {
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
               "LA TIENDITA"
             </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover our selection of premium coffee and branded merchandise
-              from Ventanita Café and Trópico.
-            </p>
+            <p>Envios a nivel nacional para toda Venezuela 🇻🇪 </p>
           </div>
 
           <Tabs
@@ -51,7 +47,7 @@ export default function ProductsPage() {
             }}
             className="mb-8"
           >
-            <div className="flex items-center justify-between mb-4">
+            {/* <div className="flex items-center justify-between mb-4">
               <TabsList>
                 <TabsTrigger value="all">All Products</TabsTrigger>
                 <TabsTrigger value="ventanita">Ventanita</TabsTrigger>
@@ -67,7 +63,7 @@ export default function ProductsPage() {
                 <Filter className="h-4 w-4 mr-2" />
                 Filters
               </Button>
-            </div>
+            </div> */}
 
             <div
               className={`md:flex space-y-4 md:space-y-0 md:space-x-4 mb-6 ${
@@ -80,7 +76,7 @@ export default function ProductsPage() {
                 onClick={() => setActiveCategory(null)}
                 className="mr-2 mb-2"
               >
-                All Categories
+                Todas las categorías
               </Button>
 
               <TabsContent value="all" className="m-0">

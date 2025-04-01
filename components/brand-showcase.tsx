@@ -1,10 +1,10 @@
 "use client"
 
-import { useRef } from "react"
-import Image from "next/image"
-import Link from "next/link"
 import { motion, useInView } from "framer-motion"
 import { ArrowRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useRef } from "react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -23,7 +23,8 @@ const brands = [
   },
   {
     name: "Trópico",
-    description: "A premium coffee brand with its own laboratory, dedicated to exploring the finest coffee flavors.",
+    description:
+      "A premium coffee brand with its own laboratory, dedicated to exploring the finest coffee flavors.",
     image: "/placeholder.svg?height=600&width=800",
     href: "/tropico",
     color: "bg-gray-50",
@@ -68,7 +69,7 @@ export default function BrandShowcase() {
           transition={{ duration: 0.6 }}
           className="text-3xl md:text-4xl font-bold text-center mb-16"
         >
-          Our Brands
+          Nuestras Marcas
         </motion.h2>
 
         <motion.div
@@ -90,9 +91,17 @@ export default function BrandShowcase() {
                   />
                 </div>
                 <CardContent className={`p-8 ${brand.color}`}>
-                  <h3 className={`text-2xl font-bold mb-3 ${brand.textColor}`}>{brand.name}</h3>
-                  <p className={`mb-6 ${brand.textColor}/80`}>{brand.description}</p>
-                  <Button asChild variant="outline" className={`${brand.textColor} border-current ${brand.hoverColor}`}>
+                  <h3 className={`text-2xl font-bold mb-3 ${brand.textColor}`}>
+                    {brand.name}
+                  </h3>
+                  <p className={`mb-6 ${brand.textColor}/80`}>
+                    {brand.description}
+                  </p>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className={`${brand.textColor} border-current ${brand.hoverColor}`}
+                  >
                     <Link href={brand.href}>
                       Explore <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
@@ -106,4 +115,3 @@ export default function BrandShowcase() {
     </section>
   )
 }
-
