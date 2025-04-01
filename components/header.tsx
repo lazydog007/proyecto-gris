@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,28 +10,42 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoonIcon, SunIcon } from "lucide-react"
+import { useSidebarToggle } from "@/hooks/use-sidebar-toggle"
+import { BellIcon, Menu, MoonIcon, SunIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 
 export function Header() {
   const { setTheme } = useTheme()
+  const { isOpen, toggle } = useSidebarToggle()
+
+  // Prevent click propagation to parent elements
+  const handleHeaderClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+  }
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-30 flex h-16 items-center border-b bg-background px-8 md:px-6">
+    <header
+      className="fixed top-0 left-0 right-0 z-30 flex h-16 items-center border-b bg-background px-4 md:px-6"
+      onClick={handleHeaderClick}
+    >
       <div className="flex items-center gap-4 md:gap-6">
+        <Button variant="ghost" size="icon" onClick={toggle} className="mr-2">
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Toggle sidebar</span>
+        </Button>
         <Link
           href="/dashboard"
           className="flex items-center gap-2 font-semibold"
         >
-          <span className="text-xl">MOTHERSHIP</span>
+          <span className="text-xl">Admin Console</span>
         </Link>
       </div>
       <div className="ml-auto flex items-center gap-4">
-        {/* <Button variant="ghost" size="icon" className="text-muted-foreground">
+        <Button variant="ghost" size="icon" className="text-muted-foreground">
           <BellIcon className="h-5 w-5" />
           <span className="sr-only">Notifications</span>
-        </Button> */}
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon">
