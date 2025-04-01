@@ -50,16 +50,18 @@ export function CartDrawer() {
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-md flex flex-col">
         <SheetHeader>
-          <SheetTitle>Your Cart</SheetTitle>
+          <SheetTitle>Tu Carrito</SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center space-y-4">
             <ShoppingCart className="h-16 w-16 text-muted-foreground" />
-            <p className="text-muted-foreground">Your cart is empty</p>
+            <p className="text-muted-foreground">
+              Agrega un cafecito a ver que se siente
+            </p>
             <Button asChild variant="outline">
               <Link href="/products" onClick={() => setIsCartOpen(false)}>
-                Continue Shopping
+                Continua Comprando
               </Link>
             </Button>
           </div>
@@ -128,7 +130,7 @@ export function CartDrawer() {
                 <p>${subtotal.toFixed(2)}</p>
               </div>
               <p className="text-sm text-muted-foreground">
-                Shipping and taxes calculated at checkout.
+                {/* Shipping and taxes calculated at checkout. */}
               </p>
               <div className="flex flex-col space-y-2">
                 <Button asChild>
@@ -138,7 +140,7 @@ export function CartDrawer() {
                 </Button>
                 <Button variant="outline" asChild>
                   <Link href="/products" onClick={() => setIsCartOpen(false)}>
-                    Continue Shopping
+                    Continua Comprando
                   </Link>
                 </Button>
               </div>

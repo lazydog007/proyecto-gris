@@ -40,7 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <span className="font-medium">${product.price.toFixed(2)}</span>
         <Button size="sm" onClick={handleAddToCart}>
           <ShoppingCart className="h-4 w-4 mr-2" />
-          Add to Cart
+          Agregar al Carrito
         </Button>
       </CardFooter>
     </Card>
