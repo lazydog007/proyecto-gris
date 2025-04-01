@@ -35,7 +35,7 @@ export default function ProductsPage() {
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
               {"LA TIENDITA"}
             </h1>
-            <p>Envios a nivel nacional para toda Venezuela 🇻🇪 </p>
+            <p>Envios para toda Venezuela 🇻🇪 </p>
           </div>
 
           <Tabs
