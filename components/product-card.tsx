@@ -31,9 +31,9 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardContent className="flex-grow p-6">
         <div className="space-y-1">
           <h3 className="font-medium">{product.name}</h3>
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          {/* <p className="text-sm text-muted-foreground line-clamp-2">
             {product.description}
-          </p>
+          </p> */}
           {product.category === "Cafe" && (
             <div className="mt-4 space-y-1 text-sm">
               {product.region && (

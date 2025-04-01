@@ -3,7 +3,6 @@
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 import { ProductCard } from "@/components/product-card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { getCategories, products } from "@/lib/products"
@@ -135,7 +134,7 @@ export default function ProductsPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <div key={product.id} className="relative">
-                  {activeTab === "all" && (
+                  {/* {activeTab === "all" && (
                     <Badge
                       className={`absolute top-2 right-2 z-10 ${
                         product.brand === "ventanita"
@@ -145,7 +144,7 @@ export default function ProductsPage() {
                     >
                       {product.brand === "ventanita" ? "Ventanita" : "Trópico"}
                     </Badge>
-                  )}
+                  )} */}
                   <ProductCard product={product} />
                 </div>
               ))}
