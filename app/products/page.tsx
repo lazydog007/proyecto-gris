@@ -14,7 +14,7 @@ export default function ProductsPage() {
     "all"
   )
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  const [showFilters, setShowFilters] = useState(false)
+  // const [showFilters, setShowFilters] = useState(false)
 
   const ventanitaCategories = getCategories("ventanita")
   const tropicoCategories = getCategories("tropico")
@@ -33,7 +33,7 @@ export default function ProductsPage() {
         <div className="container">
           <div className="mb-8 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              "LA TIENDITA"
+              {"LA TIENDITA"}
             </h1>
             <p>Envios a nivel nacional para toda Venezuela 🇻🇪 </p>
           </div>
@@ -65,11 +65,7 @@ export default function ProductsPage() {
               </Button>
             </div> */}
 
-            <div
-              className={`md:flex space-y-4 md:space-y-0 md:space-x-4 mb-6 ${
-                showFilters ? "block" : "hidden md:flex"
-              }`}
-            >
+            <div className={`md:flex space-y-4 md:space-y-0 md:space-x-4 mb-6`}>
               <Button
                 variant={activeCategory === null ? "default" : "outline"}
                 size="sm"
