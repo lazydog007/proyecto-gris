@@ -33,7 +33,7 @@ export default function ProductsPage() {
         <div className="container">
           <div className="mb-8 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              {"LA TIENDITA"}
+              {'"LA TIENDITA"'}
             </h1>
             <p>Envios para toda Venezuela 🇻🇪 </p>
           </div>

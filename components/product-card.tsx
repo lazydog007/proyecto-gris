@@ -34,6 +34,36 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="text-sm text-muted-foreground line-clamp-2">
             {product.description}
           </p>
+          {product.category === "Cafe" && (
+            <div className="mt-4 space-y-1 text-sm">
+              {product.region && (
+                <p>
+                  <strong>Región:</strong> {product.region}
+                </p>
+              )}
+              {product.process && (
+                <p>
+                  <strong>Proceso:</strong> {product.process}
+                </p>
+              )}
+              {product.coffeeVariety && (
+                <p>
+                  <strong>Variedad:</strong> {product.coffeeVariety}
+                </p>
+              )}
+              {product.roastLevel && (
+                <p>
+                  <strong>Tostado:</strong> {product.roastLevel}
+                </p>
+              )}
+              {product.flavorNotes && product.flavorNotes.length > 0 && (
+                <p>
+                  <strong>Notas de Sabor:</strong>{" "}
+                  {product.flavorNotes.join(", ")}
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </CardContent>
       <CardFooter className="p-6 pt-0 flex items-center justify-between">

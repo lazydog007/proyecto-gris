@@ -8,7 +8,8 @@ export type Product = {
   category: string
   region?: string
   coffeeVariety?: string
-  roastLevel?: "light" | "medio" | "dark"
+  process?: string
+  roastLevel?: string
   flavorNotes?: string[]
 }
 
@@ -24,7 +25,8 @@ export const products: Product[] = [
     category: "Cafe",
     region: "Sanare, Lara",
     coffeeVariety: "Catimor",
-    roastLevel: "medio",
+    process: "Lavado",
+    roastLevel: "Medio",
     flavorNotes: ["Mandarina", "Chocolate", "Caramelo", "Canela"],
   },
   {
@@ -37,20 +39,22 @@ export const products: Product[] = [
     category: "Cafe",
     region: "Rio Claro, Lara",
     coffeeVariety: "Villanueva 26",
-    roastLevel: "medio",
+    process: "Lavado",
+    roastLevel: "Medio",
     flavorNotes: ["Chocolate Oscuro", "Caramelo", "Cacao"],
   },
   {
     id: "v3",
     name: "Tropico Original 1kg",
-    description: "El regreso del Luigi ahora para tu cafeteria",
+    description: "El mismo Luigi ahora para tu cafeteria",
     price: 20,
     image: "/ventanita.jpeg?height=300&width=300",
     brand: "ventanita",
     category: "Cafe",
     region: "Rio Claro, Lara",
     coffeeVariety: "Villanueva 26",
-    roastLevel: "medio",
+    process: "Lavado",
+    roastLevel: "Medio",
     flavorNotes: ["Chocolate Oscuro", "Caramelo", "Cacao"],
   },
 ]
