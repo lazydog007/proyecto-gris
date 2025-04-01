@@ -26,7 +26,7 @@ export default function DashboardLayout({
       <div className="flex flex-1">
         <Sidebar />
         <main
-          className="flex-1 p-6 pt-16 w-full"
+          className="flex-1 p-8 pt-20 w-full"
           onClick={handleMainContentClick}
         >
           {children}
