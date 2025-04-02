@@ -133,8 +133,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
           title: `Item creado ${formData.name}`,
           duration: 1000,
         })
-        router.push("/dashboard/products")
-        router.refresh()
+        window.location.reload()
+        // router.push("/dashboard/products")
+        // router.refresh()
       } else {
         toast({
           title: "Error",
