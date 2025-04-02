@@ -192,176 +192,190 @@ export function ProductForm({ initialData }: ProductFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
-      <div>
-        <label>Nombre</label>
-        <Input
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium">Nombre</label>
+          <Input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Nombre del producto"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Marca</label>
+          <Input
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+            placeholder="Marca"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Categoría</label>
+          <Input
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            placeholder="Categoría"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Precio</label>
+          <Input
+            name="price"
+            type="number"
+            value={formData.price}
+            onChange={handleChange}
+            placeholder="Precio"
+            required
+          />
+        </div>
       </div>
       <div>
-        <label>Brand</label>
-        <Input
-          name="brand"
-          value={formData.brand}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Category</label>
-        <Input
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label>Description</label>
+        <label className="block text-sm font-medium">Descripción</label>
         <Textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
+          placeholder="Descripción del producto"
         />
       </div>
-      <div>
-        <label>Price</label>
-        <Input
-          name="price"
-          type="number"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-      </div>
-
-      {/* Coffee Details */}
-      <div className="flex flex-col gap-2">
-        <label>Flavor Notes</label>
-        <div className="flex flex-row gap-4">
-          {formData.coffeeDetails.flavorNotes.map((note) => (
-            <Badge key={note}>
-              {note}
-              <button
-                type="button"
-                onClick={() => removeCustomItem("flavorNotes", note)}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </Badge>
-          ))}
-        </div>
-        <Input
-          placeholder="Add flavor note"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault()
-              addCustomItem("flavorNotes", e.currentTarget.value)
-              e.currentTarget.value = ""
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium">Nivel de tueste</label>
+          <Input
+            name="roastLevel"
+            value={formData.coffeeDetails.roastLevel}
+            onChange={(e) =>
+              handleCoffeeDetailsChange("roastLevel", e.target.value)
             }
-          }}
-        />
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label>Weights</label>
-        <div className="flex flex-row gap-4">
-          {formData.coffeeDetails.weights.map((weight) => (
-            <Badge key={weight}>
-              {weight}
-              <button
-                type="button"
-                onClick={() => removeCustomItem("weights", weight)}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </Badge>
-          ))}
+            placeholder="Nivel de tueste"
+          />
         </div>
-        <Input
-          placeholder="Add weight"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault()
-              addCustomItem("weights", e.currentTarget.value)
-              e.currentTarget.value = ""
+        <div>
+          <label className="block text-sm font-medium">
+            Método de procesamiento
+          </label>
+          <Input
+            name="processingMethod"
+            value={formData.coffeeDetails.processingMethod}
+            onChange={(e) =>
+              handleCoffeeDetailsChange("processingMethod", e.target.value)
             }
-          }}
-        />
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label>Grind Sizes</label>
-        <div className="flex flex-row gap-4">
-          {formData.coffeeDetails.grindSizes.map((grindSize) => (
-            <Badge key={grindSize} className="gap-2">
-              {grindSize}
-              <button
-                type="button"
-                onClick={() => removeCustomItem("grindSizes", grindSize)}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </Badge>
-          ))}
+            placeholder="Método de procesamiento"
+          />
         </div>
-        <Input
-          placeholder="Add grind size"
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault()
-              addCustomItem("grindSizes", e.currentTarget.value)
-              e.currentTarget.value = ""
+        <div>
+          <label className="block text-sm font-medium">Variedad</label>
+          <Input
+            name="variety"
+            value={formData.coffeeDetails.variety}
+            onChange={(e) =>
+              handleCoffeeDetailsChange("variety", e.target.value)
             }
-          }}
-        />
+            placeholder="Variedad"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Región</label>
+          <Input
+            name="region"
+            value={formData.coffeeDetails.region}
+            onChange={(e) =>
+              handleCoffeeDetailsChange("region", e.target.value)
+            }
+            placeholder="Región"
+          />
+        </div>
       </div>
-
-      <div>
-        <label>Roast Level</label>
-        <Input
-          name="roastLevel"
-          value={formData.coffeeDetails.roastLevel}
-          onChange={(e) =>
-            handleCoffeeDetailsChange("roastLevel", e.target.value)
-          }
-        />
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium">Notas de sabor</label>
+          <div className="flex flex-wrap gap-2">
+            {formData.coffeeDetails.flavorNotes.map((note) => (
+              <Badge key={note}>
+                {note}
+                <button
+                  type="button"
+                  onClick={() => removeCustomItem("flavorNotes", note)}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </Badge>
+            ))}
+          </div>
+          <Input
+            placeholder="Agregar nota de sabor"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault()
+                addCustomItem("flavorNotes", e.currentTarget.value)
+                e.currentTarget.value = ""
+              }
+            }}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Pesos</label>
+          <div className="flex flex-wrap gap-2">
+            {formData.coffeeDetails.weights.map((weight) => (
+              <Badge key={weight}>
+                {weight}
+                <button
+                  type="button"
+                  onClick={() => removeCustomItem("weights", weight)}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </Badge>
+            ))}
+          </div>
+          <Input
+            placeholder="Agregar peso"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault()
+                addCustomItem("weights", e.currentTarget.value)
+                e.currentTarget.value = ""
+              }
+            }}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">
+            Tamaños de molienda
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {formData.coffeeDetails.grindSizes.map((grindSize) => (
+              <Badge key={grindSize}>
+                {grindSize}
+                <button
+                  type="button"
+                  onClick={() => removeCustomItem("grindSizes", grindSize)}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </Badge>
+            ))}
+          </div>
+          <Input
+            placeholder="Agregar tamaño de molienda"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault()
+                addCustomItem("grindSizes", e.currentTarget.value)
+                e.currentTarget.value = ""
+              }
+            }}
+          />
+        </div>
       </div>
-
-      <div>
-        <label>Processing Method</label>
-        <Input
-          name="processingMethod"
-          value={formData.coffeeDetails.processingMethod}
-          onChange={(e) =>
-            handleCoffeeDetailsChange("processingMethod", e.target.value)
-          }
-        />
-      </div>
-
-      <div>
-        <label>Variety</label>
-        <Input
-          name="variety"
-          value={formData.coffeeDetails.variety}
-          onChange={(e) => handleCoffeeDetailsChange("variety", e.target.value)}
-        />
-      </div>
-
-      <div>
-        <label>Region</label>
-        <Input
-          name="region"
-          value={formData.coffeeDetails.region}
-          onChange={(e) => handleCoffeeDetailsChange("region", e.target.value)}
-        />
-      </div>
-
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-4">
         {initialData && (
           <Button
             type="button"
@@ -369,18 +383,16 @@ export function ProductForm({ initialData }: ProductFormProps) {
             onClick={handleDelete}
             disabled={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete Product"}
+            {isDeleting ? "Eliminando..." : "Eliminar Producto"}
           </Button>
         )}
-        <div className=" bg-white-200">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting
-              ? "Saving..."
-              : initialData
-              ? "Update Product"
-              : "Crear Producto"}
-          </Button>
-        </div>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting
+            ? "Guardando..."
+            : initialData
+            ? "Actualizar Producto"
+            : "Crear Producto"}
+        </Button>
       </div>
     </form>
   )
