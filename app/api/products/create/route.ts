@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from "uuid"
 // /api/products/create
 export async function POST(req: NextRequest) {
   try {
-    console.log("Request body:", req.body)
     // const { user } = await getAuth()
 
     // if (!user) {
@@ -14,6 +13,8 @@ export async function POST(req: NextRequest) {
     // }
     const requestBody = await req.json()
     const formData = requestBody.formData
+
+    console.log("Form data received:", formData)
 
     const product: DrizzleProduct = {
       id: uuidv4(),
@@ -23,16 +24,12 @@ export async function POST(req: NextRequest) {
       price: parseFloat(formData.price),
       image: formData.image,
       brand: formData.brand,
-      coffeeDetails: {
-        flavorNotes: formData.flavorNotes.split(","),
-        roastLevel: formData.roastLevel,
-        processingMethod: formData.processingMethod,
-        variety: formData.variety,
-        region: formData.region,
-        weights: formData.weights.split(","),
-        grindSizes: formData.grindSizes.split(","),
-      },
+      coffeeDetails: formData.coffeeDetails,
     }
+
+    console.log("Product to be created:", product)
+
+    // BUG: coffeeDetails are not getting through to the db
 
     await createProduct(product)
 

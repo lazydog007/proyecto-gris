@@ -4,7 +4,7 @@ import { doublePrecision, json, pgTable, text } from "drizzle-orm/pg-core"
 // drizzle-kit -> provides migration
 // pushes changes: npx drizzle-kit push
 
-type CoffeeDetails = {
+export type CoffeeDetails = {
   flavorNotes: string[]
   roastLevel: string
   processingMethod: string

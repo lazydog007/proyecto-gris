@@ -135,7 +135,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           title: `Item creado ${formData.name}`,
           duration: 1000,
         })
-        router.push("/products")
+        router.push("/dashboard/products")
         router.refresh()
       } else {
         toast({
@@ -378,7 +378,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
               ? "Saving..."
               : initialData
               ? "Update Product"
-              : "Create Product"}
+              : "Crear Producto"}
           </Button>
         </div>
       </div>

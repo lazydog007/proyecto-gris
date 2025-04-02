@@ -19,6 +19,7 @@ export const getProductById = async (productId: string) => {
 }
 
 export const createProduct = async (product: DrizzleProduct) => {
+  console.log("Creating product:", product)
   const _product = await db.insert(products).values(product)
   return _product
 }
