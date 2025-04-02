@@ -15,6 +15,7 @@ type CoffeeDetails = {
 }
 export const products = pgTable("products", {
   id: text("id").primaryKey(),
+  name: text("name").notNull(),
   category: text("category"),
   description: text("description"),
   price: doublePrecision("price").notNull(),
@@ -23,4 +24,4 @@ export const products = pgTable("products", {
   coffeeDetails: json("coffee_details").$type<CoffeeDetails>(),
 })
 
-export type DrizzleProducts = typeof products.$inferSelect
+export type DrizzleProduct = typeof products.$inferSelect
