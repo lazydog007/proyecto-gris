@@ -1,26 +1,59 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { Plus, X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { X, Plus } from "lucide-react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { toast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/hooks/use-toast"
 
 // Define the schema for coffee details
 const coffeeDetailsSchema = z.object({
-  flavorNotes: z.array(z.string()).min(1, "At least one flavor note is required"),
+  flavorNotes: z
+    .array(z.string())
+    .min(1, "At least one flavor note is required"),
   roastLevel: z.string().min(1, "Roast level is required"),
   processingMethod: z.string().min(1, "Processing method is required"),
   variety: z.string().min(1, "Variety is required"),
@@ -90,7 +123,16 @@ const grindSizesOptions = [
   "Drip",
 ]
 
-const weightOptions = ["100g", "200g", "250g", "340g", "500g", "1kg", "2kg", "5lb"]
+const weightOptions = [
+  "100g",
+  "200g",
+  "250g",
+  "340g",
+  "500g",
+  "1kg",
+  "2kg",
+  "5lb",
+]
 
 export function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter()
@@ -134,10 +176,12 @@ export function ProductForm({ initialData }: ProductFormProps) {
 
       toast({
         title: initialData ? "Product updated" : "Product created",
-        description: `Successfully ${initialData ? "updated" : "created"} ${data.brand}`,
+        description: `Successfully ${initialData ? "updated" : "created"} ${
+          data.brand
+        }`,
       })
 
-      router.push("/admin/products")
+      router.push("/products")
       router.refresh()
     } catch (error) {
       console.error("Error submitting form:", error)
@@ -165,7 +209,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
         description: `Successfully deleted ${initialData?.brand}`,
       })
 
-      router.push("/admin/products")
+      router.push("/products")
       router.refresh()
     } catch (error) {
       console.error("Error deleting product:", error)
@@ -180,7 +224,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
   }
 
   // Helper function to add a custom item to an array field
-  function addCustomItem(field: any, value: string, setter: (value: string) => void) {
+  function addCustomItem(
+    field: any,
+    value: string,
+    setter: (value: string) => void
+  ) {
     if (!value.trim()) return
 
     const currentValues = field.value || []
@@ -193,11 +241,19 @@ export function ProductForm({ initialData }: ProductFormProps) {
   // Helper function to remove an item from an array
   function removeArrayItem(field: any, itemToRemove: string) {
     const currentValues = field.value || []
-    field.onChange(currentValues.filter((item: string) => item !== itemToRemove))
+    field.onChange(
+      currentValues.filter((item: string) => item !== itemToRemove)
+    )
   }
 
   const roastLevels = ["Light", "Medium-Light", "Medium", "Medium-Dark", "Dark"]
-  const processingMethods = ["Washed", "Natural", "Honey", "Anaerobic", "Wet-Hulled"]
+  const processingMethods = [
+    "Washed",
+    "Natural",
+    "Honey",
+    "Anaerobic",
+    "Wet-Hulled",
+  ]
 
   return (
     <Form {...form}>
@@ -205,7 +261,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
         <Card>
           <CardHeader>
             <CardTitle>Basic Information</CardTitle>
-            <CardDescription>Enter the basic details about the product.</CardDescription>
+            <CardDescription>
+              Enter the basic details about the product.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -243,7 +301,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Product description" className="min-h-[100px]" {...field} />
+                    <Textarea
+                      placeholder="Product description"
+                      className="min-h-[100px]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -258,7 +320,12 @@ export function ProductForm({ initialData }: ProductFormProps) {
                   <FormItem>
                     <FormLabel>Price</FormLabel>
                     <FormControl>
-                      <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                      <Input
+                        type="number"
+                        step="0.01"
+                        placeholder="0.00"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -272,7 +339,10 @@ export function ProductForm({ initialData }: ProductFormProps) {
                   <FormItem>
                     <FormLabel>Image URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com/image.jpg" {...field} />
+                      <Input
+                        placeholder="https://example.com/image.jpg"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -285,7 +355,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
         <Card>
           <CardHeader>
             <CardTitle>Coffee Details</CardTitle>
-            <CardDescription>Enter specific details about the coffee product.</CardDescription>
+            <CardDescription>
+              Enter specific details about the coffee product.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -295,7 +367,10 @@ export function ProductForm({ initialData }: ProductFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Roast Level</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select roast level" />
@@ -320,7 +395,10 @@ export function ProductForm({ initialData }: ProductFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Processing Method</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select processing method" />
@@ -379,7 +457,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
                   <FormLabel>Flavor Notes</FormLabel>
                   <div className="flex flex-wrap gap-2 mb-2">
                     {field.value?.map((note) => (
-                      <Badge key={note} variant="secondary" className="flex items-center gap-1">
+                      <Badge
+                        key={note}
+                        variant="secondary"
+                        className="flex items-center gap-1"
+                      >
                         {note}
                         <button
                           type="button"
@@ -394,7 +476,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
                   <div className="flex flex-col gap-2">
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant="outline" role="combobox" className="justify-between w-full">
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          className="justify-between w-full"
+                        >
                           Select flavor notes
                           <Plus className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -416,7 +502,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
                                   }}
                                 >
                                   {note}
-                                  {field.value?.includes(note) && <span className="ml-auto">✓</span>}
+                                  {field.value?.includes(note) && (
+                                    <span className="ml-auto">✓</span>
+                                  )}
                                 </CommandItem>
                               ))}
                             </CommandGroup>
@@ -433,14 +521,20 @@ export function ProductForm({ initialData }: ProductFormProps) {
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault()
-                            addCustomItem(field, newFlavorNote, setNewFlavorNote)
+                            addCustomItem(
+                              field,
+                              newFlavorNote,
+                              setNewFlavorNote
+                            )
                           }
                         }}
                       />
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => addCustomItem(field, newFlavorNote, setNewFlavorNote)}
+                        onClick={() =>
+                          addCustomItem(field, newFlavorNote, setNewFlavorNote)
+                        }
                       >
                         Add
                       </Button>
@@ -461,7 +555,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
                     <FormLabel>Available Weights</FormLabel>
                     <div className="flex flex-wrap gap-2 mb-2">
                       {field.value?.map((weight) => (
-                        <Badge key={weight} variant="secondary" className="flex items-center gap-1">
+                        <Badge
+                          key={weight}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
                           {weight}
                           <button
                             type="button"
@@ -476,7 +574,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
                     <div className="flex flex-col gap-2">
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button variant="outline" role="combobox" className="justify-between w-full">
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className="justify-between w-full"
+                          >
                             Select weights
                             <Plus className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -493,12 +595,17 @@ export function ProductForm({ initialData }: ProductFormProps) {
                                     onSelect={() => {
                                       const currentValues = field.value || []
                                       if (!currentValues.includes(weight)) {
-                                        field.onChange([...currentValues, weight])
+                                        field.onChange([
+                                          ...currentValues,
+                                          weight,
+                                        ])
                                       }
                                     }}
                                   >
                                     {weight}
-                                    {field.value?.includes(weight) && <span className="ml-auto">✓</span>}
+                                    {field.value?.includes(weight) && (
+                                      <span className="ml-auto">✓</span>
+                                    )}
                                   </CommandItem>
                                 ))}
                               </CommandGroup>
@@ -522,7 +629,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
                         <Button
                           type="button"
                           variant="outline"
-                          onClick={() => addCustomItem(field, newWeight, setNewWeight)}
+                          onClick={() =>
+                            addCustomItem(field, newWeight, setNewWeight)
+                          }
                         >
                           Add
                         </Button>
@@ -542,7 +651,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
                     <FormLabel>Grind Sizes</FormLabel>
                     <div className="flex flex-wrap gap-2 mb-2">
                       {field.value?.map((size) => (
-                        <Badge key={size} variant="secondary" className="flex items-center gap-1">
+                        <Badge
+                          key={size}
+                          variant="secondary"
+                          className="flex items-center gap-1"
+                        >
                           {size}
                           <button
                             type="button"
@@ -557,7 +670,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
                     <div className="flex flex-col gap-2">
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button variant="outline" role="combobox" className="justify-between w-full">
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className="justify-between w-full"
+                          >
                             Select grind sizes
                             <Plus className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
@@ -579,7 +696,9 @@ export function ProductForm({ initialData }: ProductFormProps) {
                                     }}
                                   >
                                     {size}
-                                    {field.value?.includes(size) && <span className="ml-auto">✓</span>}
+                                    {field.value?.includes(size) && (
+                                      <span className="ml-auto">✓</span>
+                                    )}
                                   </CommandItem>
                                 ))}
                               </CommandGroup>
@@ -596,14 +715,20 @@ export function ProductForm({ initialData }: ProductFormProps) {
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
                               e.preventDefault()
-                              addCustomItem(field, newGrindSize, setNewGrindSize)
+                              addCustomItem(
+                                field,
+                                newGrindSize,
+                                setNewGrindSize
+                              )
                             }
                           }}
                         />
                         <Button
                           type="button"
                           variant="outline"
-                          onClick={() => addCustomItem(field, newGrindSize, setNewGrindSize)}
+                          onClick={() =>
+                            addCustomItem(field, newGrindSize, setNewGrindSize)
+                          }
                         >
                           Add
                         </Button>
@@ -617,16 +742,29 @@ export function ProductForm({ initialData }: ProductFormProps) {
           </CardContent>
           <CardFooter className="flex justify-between">
             {initialData ? (
-              <Button type="button" variant="destructive" onClick={onDelete} disabled={isDeleting}>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={onDelete}
+                disabled={isDeleting}
+              >
                 {isDeleting ? "Deleting..." : "Delete Product"}
               </Button>
             ) : (
-              <Button type="button" variant="outline" onClick={() => router.push("/admin/products")}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push("/products")}
+              >
                 Cancel
               </Button>
             )}
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : initialData ? "Update Product" : "Create Product"}
+              {isSubmitting
+                ? "Saving..."
+                : initialData
+                ? "Update Product"
+                : "Create Product"}
             </Button>
           </CardFooter>
         </Card>
@@ -634,4 +772,3 @@ export function ProductForm({ initialData }: ProductFormProps) {
     </Form>
   )
 }
-

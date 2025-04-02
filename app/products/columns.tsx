@@ -5,7 +5,9 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,8 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
 
 // Define the type for our data
 export type Product = {
@@ -41,7 +41,10 @@ export const columns: ColumnDef<Product>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
@@ -77,13 +80,18 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "id",
     header: "ID",
-    cell: ({ row }) => <div className="font-mono text-xs">{row.getValue("id")}</div>,
+    cell: ({ row }) => (
+      <div className="font-mono text-xs">{row.getValue("id")}</div>
+    ),
   },
   {
     accessorKey: "brand",
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
           Brand
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -101,7 +109,10 @@ export const columns: ColumnDef<Product>[] = [
     accessorKey: "price",
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
           Price
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
@@ -140,14 +151,17 @@ export const columns: ColumnDef<Product>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href={`/admin/products/${product.id}`}>View details</Link>
+              <Link href={`/products/${product.id}`}>View details</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/admin/products/${product.id}/edit`}>Edit</Link>
+              <Link href={`/products/${product.id}/edit`}>Edit</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive focus:text-destructive" asChild>
-              <Link href={`/admin/products/${product.id}/delete`}>Delete</Link>
+            <DropdownMenuItem
+              className="text-destructive focus:text-destructive"
+              asChild
+            >
+              <Link href={`/products/${product.id}/delete`}>Delete</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -155,4 +169,3 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
 ]
-

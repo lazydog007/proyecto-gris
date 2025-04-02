@@ -1,5 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -25,7 +32,11 @@ async function getProduct(id: string) {
   return null
 }
 
-export default async function DeleteProductPage({ params }: { params: { id: string } }) {
+export default async function DeleteProductPage({
+  params,
+}: {
+  params: { id: string }
+}) {
   const product = await getProduct(params.id)
 
   if (!product) {
@@ -37,7 +48,10 @@ export default async function DeleteProductPage({ params }: { params: { id: stri
       <Card className="max-w-md mx-auto">
         <CardHeader>
           <CardTitle>Delete Product</CardTitle>
-          <CardDescription>Are you sure you want to delete this product? This action cannot be undone.</CardDescription>
+          <CardDescription>
+            Are you sure you want to delete this product? This action cannot be
+            undone.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="font-medium">{product.brand}</p>
@@ -45,7 +59,7 @@ export default async function DeleteProductPage({ params }: { params: { id: stri
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button variant="outline" asChild>
-            <Link href="/admin/products">Cancel</Link>
+            <Link href="/products">Cancel</Link>
           </Button>
           <form action={`/api/products/${product.id}/delete`} method="POST">
             <Button variant="destructive" type="submit">
@@ -57,4 +71,3 @@ export default async function DeleteProductPage({ params }: { params: { id: stri
     </div>
   )
 }
-
