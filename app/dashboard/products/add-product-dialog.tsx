@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
 import { Plus } from "lucide-react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,17 +22,16 @@ export function AddProductDialog() {
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Add Product
+          Nuevo Producto
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Add New Product</DialogTitle>
-          <DialogDescription>Fill out the form below to add a new product to your inventory.</DialogDescription>
+          <DialogTitle>Nuevo Producto</DialogTitle>
+          <DialogDescription>Completa este formulario</DialogDescription>
         </DialogHeader>
         <ProductForm />
       </DialogContent>
     </Dialog>
   )
 }
-

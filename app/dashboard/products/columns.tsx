@@ -16,27 +16,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { DrizzleProduct } from "@/lib/db/schema"
 
-// Define the type for our data
-export type Product = {
-  id: string
-  category: string
-  description: string
-  price: number
-  image: string
-  brand: string
-  coffeeDetails: {
-    flavorNotes: string[]
-    roastLevel: string
-    processingMethod: string
-    variety: string
-    region: string
-    weights: string[]
-    grindSizes: string[]
-  }
-}
-
-export const columns: ColumnDef<Product>[] = [
+export const columns: ColumnDef<DrizzleProduct>[] = [
   {
     id: "select",
     header: ({ table }) => (
