@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid"
 // /api/products/create
 export async function POST(req: NextRequest) {
   try {
+    console.log("Request body:", req.body)
     // const { user } = await getAuth()
 
     // if (!user) {

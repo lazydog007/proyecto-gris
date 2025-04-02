@@ -117,13 +117,17 @@ export function ProductForm({ initialData }: ProductFormProps) {
 
     try {
       setIsSubmitting(true)
+      console.log("Submitting form data:", formData)
       const response = await fetch("/api/products/create", {
+        cache: "no-store",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "api-key": process.env.API_KEY!,
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify({
+          formData: formData,
+        }),
       })
 
       if (response.ok) {

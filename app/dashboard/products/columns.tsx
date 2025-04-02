@@ -2,7 +2,6 @@
 
 import type { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import Image from "next/image"
 import Link from "next/link"
 
 import { Badge } from "@/components/ui/badge"
@@ -41,24 +40,24 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "image",
-    header: "Image",
-    cell: ({ row }) => {
-      const image = row.getValue("image") as string
-      return (
-        <div className="flex items-center justify-center">
-          <Image
-            src={image || "/placeholder.svg"}
-            alt={row.getValue("description")}
-            width={50}
-            height={50}
-            className="rounded-md object-cover"
-          />
-        </div>
-      )
-    },
-  },
+  // {
+  //   accessorKey: "image",
+  //   header: "Image",
+  //   cell: ({ row }) => {
+  //     const image = row.getValue("image") as string
+  //     return (
+  //       <div className="flex items-center justify-center">
+  //         <Image
+  //           src={image || "/placeholder.svg"}
+  //           alt={row.getValue("description")}
+  //           width={50}
+  //           height={50}
+  //           className="rounded-md object-cover"
+  //         />
+  //       </div>
+  //     )
+  //   },
+  // },
   {
     accessorKey: "id",
     header: "ID",
