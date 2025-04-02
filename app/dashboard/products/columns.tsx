@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { DrizzleProduct } from "@/lib/db/schema"
+import { EditProductDialog } from "./edit-product-dialog"
 
 export const columns: ColumnDef<DrizzleProduct>[] = [
   {
@@ -141,6 +142,15 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
       return <div>N/A</div>
     },
   },
+  {
+    accessorKey: "",
+    header: "Modify",
+    cell: ({ row }) => {
+      const product = row.original
+      return <EditProductDialog product={product} />
+    },
+  },
+
   {
     id: "actions",
     cell: ({ row }) => {

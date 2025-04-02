@@ -1,6 +1,5 @@
 "use client"
 
-import { Plus } from "lucide-react"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
@@ -24,10 +23,7 @@ export function EditProductDialog({ product }: EditProductDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Nuevo Producto
-        </Button>
+        <Button>Modificar</Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
