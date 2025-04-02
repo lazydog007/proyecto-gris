@@ -59,10 +59,10 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
   //   },
   // },
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "name",
+    header: "Nombre",
     cell: ({ row }) => (
-      <div className="font-mono text-xs">{row.getValue("id")}</div>
+      <div className="font-mono text-xs">{row.getValue("name")}</div>
     ),
   },
   {

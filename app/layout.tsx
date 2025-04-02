@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import type React from "react"
 
 import { CartProvider } from "@/components/cart-provider"
+import QueryProvider from "@/components/query-provider"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 import { GeistMono } from "geist/font/mono"
@@ -29,17 +30,17 @@ export default function RootLayout({
           GeistMono.variable
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <CartProvider>{children}</CartProvider>
-        </ThemeProvider>
+        <QueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <CartProvider>{children}</CartProvider>
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   )
 }
-
-import "./globals.css"
