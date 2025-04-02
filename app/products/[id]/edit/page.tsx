@@ -1,12 +1,11 @@
-import { AddProductDialog } from "./add-product-dialog"
-import { DataTable } from "./data-table"
-import { columns } from "./columns"
+import { ProductForm } from "../../product-form"
+import { notFound } from "next/navigation"
 
-async function getProducts() {
+async function getProduct(id: string) {
   // In a real application, this would fetch from your database
-  // For now, returning mock data that matches your schema
-  return [
-    {
+  // For now, returning mock data if the ID matches
+  if (id === "prod_1") {
+    return {
       id: "prod_1",
       category: "Coffee",
       description: "Premium Ethiopian coffee with rich flavor profile",
@@ -22,8 +21,11 @@ async function getProducts() {
         weights: ["250g", "500g", "1kg"],
         grindSizes: ["Whole Bean", "Espresso", "Filter", "French Press"],
       },
-    },
-    {
+    }
+  }
+
+  if (id === "prod_2") {
+    return {
       id: "prod_2",
       category: "Coffee",
       description: "Colombian single-origin coffee with caramel notes",
@@ -39,20 +41,23 @@ async function getProducts() {
         weights: ["250g", "500g"],
         grindSizes: ["Whole Bean", "Espresso", "Filter"],
       },
-    },
-  ]
+    }
+  }
+
+  return null
 }
 
-export default async function ProductsPage() {
-  const products = await getProducts()
+export default async function EditProductPage({ params }: { params: { id: string } }) {
+  const product = await getProduct(params.id)
+
+  if (!product) {
+    notFound()
+  }
 
   return (
     <div className="container mx-auto py-10">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Products</h1>
-        <AddProductDialog />
-      </div>
-      <DataTable columns={columns} data={products} />
+      <h1 className="text-3xl font-bold mb-6">Edit Product</h1>
+      <ProductForm initialData={product} />
     </div>
   )
 }
