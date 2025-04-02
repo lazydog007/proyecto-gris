@@ -73,7 +73,7 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Brand
+          Marca
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
@@ -81,39 +81,64 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
   },
   {
     accessorKey: "category",
-    header: "Category",
+    header: "Categoria",
     cell: ({ row }) => {
       return <Badge variant="outline">{row.getValue("category")}</Badge>
     },
   },
   {
-    accessorKey: "price",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Price
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    accessorKey: "priceRange",
+    header: "Price Range",
     cell: ({ row }) => {
-      const price = Number.parseFloat(row.getValue("price"))
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(price)
-      return <div>{formatted}</div>
+      const category = row.getValue("category")
+      const coffeeDetails = row.original.coffeeDetails
+
+      if (category === "Cafe" && coffeeDetails?.weightPrices?.length) {
+        const prices = coffeeDetails.weightPrices.map((wp) => wp.price)
+        const minPrice = Math.min(...prices)
+        const maxPrice = Math.max(...prices)
+
+        const formattedMin = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(minPrice)
+
+        const formattedMax = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(maxPrice)
+
+        return (
+          <div>
+            {formattedMin} - {formattedMax}
+          </div>
+        )
+      }
+
+      return <div>N/A</div>
     },
   },
+
   {
-    accessorKey: "coffeeDetails.roastLevel",
-    header: "Roast Level",
+    accessorKey: "weightSizes",
+    header: "Weight Sizes",
     cell: ({ row }) => {
+      const category = row.getValue("category")
       const coffeeDetails = row.original.coffeeDetails
-      return <div>{coffeeDetails?.roastLevel || "N/A"}</div>
+
+      if (category === "Cafe" && coffeeDetails?.weightPrices?.length) {
+        return (
+          <div className="flex flex-wrap gap-2">
+            {coffeeDetails.weightPrices.map((wp) => (
+              <Badge key={wp.weight} variant="outline">
+                {wp.weight}
+              </Badge>
+            ))}
+          </div>
+        )
+      }
+
+      return <div>N/A</div>
     },
   },
   {

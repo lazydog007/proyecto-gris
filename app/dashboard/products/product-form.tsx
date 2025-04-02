@@ -15,7 +15,6 @@ interface ProductFormProps {
     name: string
     category: string
     description?: string
-    price: number
     image: string
     brand: string
     coffeeDetails: {
@@ -24,8 +23,8 @@ interface ProductFormProps {
       processingMethod: string
       variety: string
       region: string
-      weights: string[]
       grindSizes: string[]
+      weightPrices: { weight: string; price: number }[]
     }
   }
 }
@@ -40,17 +39,20 @@ export function ProductForm({ initialData }: ProductFormProps) {
       name: "Cafe Ventanita Tolva",
       category: "Cafe",
       description: "",
-      price: 5,
       image: "",
       brand: "ventanita",
       coffeeDetails: {
-        flavorNotes: ["Chocolate"],
+        flavorNotes: ["Chocolate", "Caramelo", "Frutos Secos"],
         roastLevel: "Medio",
         processingMethod: "Lavado",
         variety: "Catimor",
         region: "Sanare, Lara",
-        weights: ["250g", "500g", "1000g"],
         grindSizes: ["Grano Entero", "Filtradito"],
+        weightPrices: [
+          { weight: "250g", price: 8 },
+          { weight: "500g", price: 15 },
+          { weight: "1kg", price: 25 },
+        ],
       },
     }
   )
@@ -64,6 +66,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
       [name]: value,
     }))
   }
+
   const handleCoffeeDetailsChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -74,24 +77,24 @@ export function ProductForm({ initialData }: ProductFormProps) {
     }))
   }
 
-  const addCustomItem = (field: string, value: string) => {
-    if (!value.trim()) return
+  const addWeightPrice = (weight: string, price: number) => {
+    if (!weight.trim() || price <= 0) return
     setFormData((prev) => ({
       ...prev,
       coffeeDetails: {
         ...prev.coffeeDetails,
-        [field]: [...prev.coffeeDetails[field], value],
+        weightPrices: [...prev.coffeeDetails.weightPrices, { weight, price }],
       },
     }))
   }
 
-  const removeCustomItem = (field: string, value: string) => {
+  const removeWeightPrice = (weight: string) => {
     setFormData((prev) => ({
       ...prev,
       coffeeDetails: {
         ...prev.coffeeDetails,
-        [field]: prev.coffeeDetails[field].filter(
-          (item: string) => item !== value
+        weightPrices: prev.coffeeDetails.weightPrices.filter(
+          (item) => item.weight !== weight
         ),
       },
     }))
@@ -101,12 +104,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
     e.preventDefault()
 
     // Basic validation
-    if (
-      !formData.name ||
-      !formData.category ||
-      !formData.price ||
-      !formData.brand
-    ) {
+    if (!formData.name || !formData.category || !formData.brand) {
       toast({
         title: "Error",
         description: "Please fill in all required fields.",
@@ -170,7 +168,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           title: "Product deleted",
           description: `Successfully deleted ${initialData.name}`,
         })
-        router.push("/products")
+        router.push("/dashboard/products")
         router.refresh()
       } else {
         toast({
@@ -189,6 +187,33 @@ export function ProductForm({ initialData }: ProductFormProps) {
     } finally {
       setIsDeleting(false)
     }
+  }
+
+  const addCustomItem = (
+    field: "flavorNotes" | "grindSizes",
+    value: string
+  ) => {
+    if (!value.trim()) return
+    setFormData((prev) => ({
+      ...prev,
+      coffeeDetails: {
+        ...prev.coffeeDetails,
+        [field]: [...prev.coffeeDetails[field], value],
+      },
+    }))
+  }
+
+  const removeCustomItem = (
+    field: "flavorNotes" | "grindSizes",
+    value: string
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      coffeeDetails: {
+        ...prev.coffeeDetails,
+        [field]: prev.coffeeDetails[field].filter((item) => item !== value),
+      },
+    }))
   }
 
   return (
@@ -221,17 +246,6 @@ export function ProductForm({ initialData }: ProductFormProps) {
             value={formData.category}
             onChange={handleChange}
             placeholder="Categoría"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Precio</label>
-          <Input
-            name="price"
-            type="number"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="Precio"
             required
           />
         </div>
@@ -321,30 +335,65 @@ export function ProductForm({ initialData }: ProductFormProps) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium">Pesos</label>
+          <label className="block text-sm font-medium">Pesos y Precios</label>
           <div className="flex flex-wrap gap-2">
-            {formData.coffeeDetails.weights.map((weight) => (
+            {formData.coffeeDetails.weightPrices.map(({ weight, price }) => (
               <Badge key={weight}>
-                {weight}
-                <button
-                  type="button"
-                  onClick={() => removeCustomItem("weights", weight)}
-                >
+                {weight} - ${price}
+                <button type="button" onClick={() => removeWeightPrice(weight)}>
                   <X className="h-4 w-4" />
                 </button>
               </Badge>
             ))}
           </div>
-          <Input
-            placeholder="Agregar peso"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault()
-                addCustomItem("weights", e.currentTarget.value)
-                e.currentTarget.value = ""
-              }
-            }}
-          />
+          <div className="flex gap-2">
+            <Input
+              placeholder="Agregar peso (e.g., 250g)"
+              id="weight-input"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault()
+                  const weightInput = document.getElementById(
+                    "weight-input"
+                  ) as HTMLInputElement
+                  const priceInput = document.getElementById(
+                    "price-input"
+                  ) as HTMLInputElement
+                  if (weightInput && priceInput) {
+                    const weight = weightInput.value
+                    const price = parseFloat(priceInput.value)
+                    addWeightPrice(weight, price)
+                    weightInput.value = ""
+                    priceInput.value = ""
+                  }
+                }
+              }}
+            />
+            <Input
+              placeholder="Agregar precio"
+              id="price-input"
+              type="number"
+              step="0.5"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault()
+                  const weightInput = document.getElementById(
+                    "weight-input"
+                  ) as HTMLInputElement
+                  const priceInput = document.getElementById(
+                    "price-input"
+                  ) as HTMLInputElement
+                  if (weightInput && priceInput) {
+                    const weight = weightInput.value
+                    const price = parseFloat(priceInput.value)
+                    addWeightPrice(weight, price)
+                    weightInput.value = ""
+                    priceInput.value = ""
+                  }
+                }
+              }}
+            />
+          </div>
         </div>
         <div>
           <label className="block text-sm font-medium">

@@ -4,15 +4,21 @@ import { doublePrecision, json, pgTable, text } from "drizzle-orm/pg-core"
 // drizzle-kit -> provides migration
 // pushes changes: npx drizzle-kit push
 
+export type WeightPrice = {
+  weight: string // e.g., "250g", "500g", "1kg"
+  price: number // Price for the specific weight
+}
+
 export type CoffeeDetails = {
   flavorNotes: string[]
   roastLevel: string
   processingMethod: string
   variety: string
   region: string
-  weights: string[]
   grindSizes: string[]
+  weightPrices: WeightPrice[] // Array of weight-price pairs
 }
+
 export const products = pgTable("products", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
