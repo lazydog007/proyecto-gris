@@ -5,28 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
+import { DrizzleProduct } from "@/lib/db/schema"
 import { X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 interface ProductFormProps {
-  initialData?: {
-    id?: string
-    name: string
-    category: string
-    description?: string
-    image: string
-    brand: string
-    coffeeDetails: {
-      flavorNotes: string[]
-      roastLevel: string
-      processingMethod: string
-      variety: string
-      region: string
-      grindSizes: string[]
-      weightPrices: { weight: string; price: number }[]
-    }
-  }
+  initialData?: DrizzleProduct
 }
 
 export function ProductForm({ initialData }: ProductFormProps) {
@@ -71,7 +56,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
     setFormData((prev) => ({
       ...prev,
       coffeeDetails: {
-        ...prev.coffeeDetails,
+        ...prev.coffeeDetails!,
         [field]: value,
       },
     }))
@@ -82,8 +67,8 @@ export function ProductForm({ initialData }: ProductFormProps) {
     setFormData((prev) => ({
       ...prev,
       coffeeDetails: {
-        ...prev.coffeeDetails,
-        weightPrices: [...prev.coffeeDetails.weightPrices, { weight, price }],
+        ...prev.coffeeDetails!,
+        weightPrices: [...prev.coffeeDetails!.weightPrices, { weight, price }],
       },
     }))
   }
@@ -92,8 +77,8 @@ export function ProductForm({ initialData }: ProductFormProps) {
     setFormData((prev) => ({
       ...prev,
       coffeeDetails: {
-        ...prev.coffeeDetails,
-        weightPrices: prev.coffeeDetails.weightPrices.filter(
+        ...prev.coffeeDetails!,
+        weightPrices: prev.coffeeDetails!.weightPrices.filter(
           (item) => item.weight !== weight
         ),
       },
@@ -198,8 +183,8 @@ export function ProductForm({ initialData }: ProductFormProps) {
     setFormData((prev) => ({
       ...prev,
       coffeeDetails: {
-        ...prev.coffeeDetails,
-        [field]: [...prev.coffeeDetails[field], value],
+        ...prev.coffeeDetails!,
+        [field]: [...prev.coffeeDetails![field], value],
       },
     }))
   }
@@ -211,8 +196,8 @@ export function ProductForm({ initialData }: ProductFormProps) {
     setFormData((prev) => ({
       ...prev,
       coffeeDetails: {
-        ...prev.coffeeDetails,
-        [field]: prev.coffeeDetails[field].filter((item) => item !== value),
+        ...prev.coffeeDetails!,
+        [field]: prev.coffeeDetails![field].filter((item) => item !== value),
       },
     }))
   }
@@ -234,7 +219,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           <label className="block text-sm font-medium">Marca</label>
           <Input
             name="brand"
-            value={formData.brand}
+            value={formData.brand!}
             onChange={handleChange}
             placeholder="Marca"
             required
@@ -244,7 +229,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           <label className="block text-sm font-medium">Categoría</label>
           <Input
             name="category"
-            value={formData.category}
+            value={formData.category!}
             onChange={handleChange}
             placeholder="Categoría"
             required
@@ -255,7 +240,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
         <label className="block text-sm font-medium">Descripción</label>
         <Textarea
           name="description"
-          value={formData.description}
+          value={formData.description!}
           onChange={handleChange}
           placeholder="Descripción del producto"
         />
@@ -265,7 +250,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           <label className="block text-sm font-medium">Nivel de tueste</label>
           <Input
             name="roastLevel"
-            value={formData.coffeeDetails.roastLevel}
+            value={formData.coffeeDetails!.roastLevel}
             onChange={(e) =>
               handleCoffeeDetailsChange("roastLevel", e.target.value)
             }
@@ -278,7 +263,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           </label>
           <Input
             name="processingMethod"
-            value={formData.coffeeDetails.processingMethod}
+            value={formData.coffeeDetails!.processingMethod}
             onChange={(e) =>
               handleCoffeeDetailsChange("processingMethod", e.target.value)
             }
@@ -289,7 +274,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           <label className="block text-sm font-medium">Variedad</label>
           <Input
             name="variety"
-            value={formData.coffeeDetails.variety}
+            value={formData.coffeeDetails!.variety}
             onChange={(e) =>
               handleCoffeeDetailsChange("variety", e.target.value)
             }
@@ -300,7 +285,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
           <label className="block text-sm font-medium">Región</label>
           <Input
             name="region"
-            value={formData.coffeeDetails.region}
+            value={formData.coffeeDetails!.region}
             onChange={(e) =>
               handleCoffeeDetailsChange("region", e.target.value)
             }
@@ -312,7 +297,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
         <div>
           <label className="block text-sm font-medium">Notas de sabor</label>
           <div className="flex flex-wrap gap-2">
-            {formData.coffeeDetails.flavorNotes.map((note) => (
+            {formData.coffeeDetails!.flavorNotes.map((note) => (
               <Badge key={note}>
                 {note}
                 <button
@@ -338,7 +323,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
         <div>
           <label className="block text-sm font-medium">Pesos y Precios</label>
           <div className="flex flex-wrap gap-2">
-            {formData.coffeeDetails.weightPrices.map(({ weight, price }) => (
+            {formData.coffeeDetails!.weightPrices.map(({ weight, price }) => (
               <Badge key={weight}>
                 {weight} - ${price}
                 <button type="button" onClick={() => removeWeightPrice(weight)}>
@@ -401,7 +386,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             Tamaños de molienda
           </label>
           <div className="flex flex-wrap gap-2">
-            {formData.coffeeDetails.grindSizes.map((grindSize) => (
+            {formData.coffeeDetails!.grindSizes.map((grindSize) => (
               <Badge key={grindSize}>
                 {grindSize}
                 <button
