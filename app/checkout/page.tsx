@@ -43,7 +43,7 @@ export default function CheckoutPage() {
                 Agrega un cafecito a ver que se siente.
               </p>
               <Button asChild>
-                <Link href="/products">Ver Productos</Link>
+                <Link href="/shop">Ver Productos</Link>
               </Button>
             </div>
           </div>
@@ -107,7 +107,7 @@ export default function CheckoutPage() {
                 coordinar el pago.
               </p>
               <Button asChild>
-                <Link href="/products">Continua Comprando</Link>
+                <Link href="/shop">Continua Comprando</Link>
               </Button>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function CheckoutPage() {
       <div className="pt-24 pb-16 md:pt-32 md:pb-24">
         <div className="container">
           <Link
-            href="/products"
+            href="/shop"
             className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-8"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

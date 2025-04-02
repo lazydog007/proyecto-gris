@@ -59,7 +59,7 @@ export default async function DeleteProductPage({
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button variant="outline" asChild>
-            <Link href="/products">Cancel</Link>
+            <Link href="/shop">Cancel</Link>
           </Button>
           <form action={`/api/products/${product.id}/delete`} method="POST">
             <Button variant="destructive" type="submit">

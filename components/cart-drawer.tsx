@@ -60,7 +60,7 @@ export function CartDrawer() {
               Agrega un cafecito a ver que se siente
             </p>
             <Button asChild variant="outline">
-              <Link href="/products" onClick={() => setIsCartOpen(false)}>
+              <Link href="/shop" onClick={() => setIsCartOpen(false)}>
                 Continua Comprando
               </Link>
             </Button>
@@ -139,7 +139,7 @@ export function CartDrawer() {
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>
-                  <Link href="/products" onClick={() => setIsCartOpen(false)}>
+                  <Link href="/shop" onClick={() => setIsCartOpen(false)}>
                     Continua Comprando
                   </Link>
                 </Button>

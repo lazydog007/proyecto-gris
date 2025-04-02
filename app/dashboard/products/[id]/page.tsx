@@ -215,7 +215,7 @@ export default async function ProductDetailPage({
           </CardContent>
           <CardFooter>
             <Button asChild>
-              <Link href="/products">Back to Products</Link>
+              <Link href="/shop">Back to Products</Link>
             </Button>
           </CardFooter>
         </Card>
