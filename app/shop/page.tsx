@@ -3,9 +3,7 @@
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 import { ProductCard } from "@/components/product-card"
-import { Button } from "@/components/ui/button"
 import { useQuery } from "@tanstack/react-query"
-import { Filter } from "lucide-react"
 import { useState } from "react"
 
 export default function ShopsPage() {
@@ -46,11 +44,11 @@ export default function ShopsPage() {
               "LA TIENDITA"
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover our selection of premium coffee and branded merchandise.
+              Envios a toda Venezuela y el mundo enteroooo
             </p>
           </div>
 
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <Button
                 variant="outline"
@@ -93,7 +91,7 @@ export default function ShopsPage() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
 
           {productsDataLoading ? (
             <div className="text-center py-12">

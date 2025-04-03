@@ -15,6 +15,7 @@ export type CoffeeDetails = {
   processingMethod: string
   variety: string
   region: string
+  altitude: string
   grindSizes: string[]
   weightPrices: WeightPrice[] // Array of weight-price pairs
 }

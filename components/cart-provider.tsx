@@ -11,12 +11,13 @@ import {
 
 export type CartItem = {
   product: DrizzleProduct
+  optionPrice?: { option: string; price: number }
   quantity: number
 }
 
 type CartContextType = {
   items: CartItem[]
-  addItem: (product: DrizzleProduct, quantity?: number) => void
+  addItem: (item: CartItem) => void
   removeItem: (productId: string) => void
   updateQuantity: (productId: string, quantity: number) => void
   clearCart: () => void
@@ -55,7 +56,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, isClient])
 
-  const addItem = (product: DrizzleProduct, quantity = 1) => {
+  const addItem = (
+    product: DrizzleProduct,
+    optionPrice: { option: string; price: number },
+    quantity = 1
+  ) => {
     setItems((prevItems) => {
       const existingItem = prevItems.find(
         (item) => item.product.id === product.id
@@ -68,7 +73,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             : item
         )
       } else {
-        return [...prevItems, { product, quantity }]
+        return [...prevItems, { product, optionPrice, quantity }]
       }
     })
 

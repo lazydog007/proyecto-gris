@@ -52,6 +52,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
         processingMethod: "Lavado",
         variety: "Catimor",
         region: "Sanare, Lara",
+        altitude: "1200msm",
         grindSizes: ["Grano Entero", "Filtradito"],
         weightPrices: [
           { weight: "250g", price: 8 },
@@ -373,6 +374,17 @@ export function ProductForm({ initialData }: ProductFormProps) {
               handleCoffeeDetailsChange("region", e.target.value)
             }
             placeholder="Región"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Altitud</label>
+          <Input
+            name="altitude"
+            value={formData.coffeeDetails!.altitude}
+            onChange={(e) =>
+              handleCoffeeDetailsChange("altitude", e.target.value)
+            }
+            placeholder="Altitud"
           />
         </div>
       </div>
