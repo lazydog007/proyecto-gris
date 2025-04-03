@@ -5,33 +5,32 @@ import { ArrowUpDown } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { DrizzleProduct } from "@/lib/db/schema"
 import { EditProductDialog } from "./edit-product-dialog"
 
 export const columns: ColumnDef<DrizzleProduct>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+  // {
+  //   id: "select",
+  //   header: ({ table }) => (
+  //     <Checkbox
+  //       checked={
+  //         table.getIsAllPageRowsSelected() ||
+  //         (table.getIsSomePageRowsSelected() && "indeterminate")
+  //       }
+  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+  //       aria-label="Select all"
+  //     />
+  //   ),
+  //   cell: ({ row }) => (
+  //     <Checkbox
+  //       checked={row.getIsSelected()}
+  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
+  //       aria-label="Select row"
+  //     />
+  //   ),
+  //   enableSorting: false,
+  //   enableHiding: false,
+  // },
   // {
   //   accessorKey: "image",
   //   header: "Image",
@@ -54,7 +53,7 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
     accessorKey: "name",
     header: "Nombre",
     cell: ({ row }) => (
-      <div className="font-mono text-xs">{row.getValue("name")}</div>
+      <div className="font-semibold text-md">{row.getValue("name")}</div>
     ),
   },
   {
@@ -80,7 +79,7 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
   },
   {
     accessorKey: "priceRange",
-    header: "Price Range",
+    header: "Rango de Precio",
     cell: ({ row }) => {
       const category = row.getValue("category")
       const coffeeDetails = row.original.coffeeDetails
@@ -100,39 +99,36 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
           currency: "USD",
         }).format(maxPrice)
 
-        return (
-          <div>
-            {formattedMin} - {formattedMax}
-          </div>
-        )
+        const range = `${formattedMin} - ${formattedMax}`
+
+        return <div>{formattedMin !== formattedMax ? range : formattedMin}</div>
       }
 
       return <div>N/A</div>
     },
   },
+  // {
+  //   accessorKey: "weightSizes",
+  //   header: "Pesos Disponibles",
+  //   cell: ({ row }) => {
+  //     const category = row.getValue("category")
+  //     const coffeeDetails = row.original.coffeeDetails
 
-  {
-    accessorKey: "weightSizes",
-    header: "Weight Sizes",
-    cell: ({ row }) => {
-      const category = row.getValue("category")
-      const coffeeDetails = row.original.coffeeDetails
+  //     if (category === "Cafe" && coffeeDetails?.weightPrices?.length) {
+  //       return (
+  //         <div className="flex flex-wrap gap-2">
+  //           {coffeeDetails.weightPrices.map((wp) => (
+  //             <Badge key={wp.weight} variant="outline">
+  //               {wp.weight}
+  //             </Badge>
+  //           ))}
+  //         </div>
+  //       )
+  //     }
 
-      if (category === "Cafe" && coffeeDetails?.weightPrices?.length) {
-        return (
-          <div className="flex flex-wrap gap-2">
-            {coffeeDetails.weightPrices.map((wp) => (
-              <Badge key={wp.weight} variant="outline">
-                {wp.weight}
-              </Badge>
-            ))}
-          </div>
-        )
-      }
-
-      return <div>N/A</div>
-    },
-  },
+  //     return <div>N/A</div>
+  //   },
+  // },
   {
     accessorKey: "",
     header: "Active",
