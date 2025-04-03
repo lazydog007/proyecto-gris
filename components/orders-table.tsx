@@ -12,25 +12,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { ArrowUpDown } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import {
   Table,
   TableBody,
@@ -40,17 +25,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from "@/hooks/use-toast"
+import { DrizzleOrder } from "@/lib/db/schema"
 import { useState } from "react"
-
-type Order = {
-  id: string
-  customer: string
-  email: string
-  date: string
-  amount: string
-  status: string
-  items: number
-}
+import { EditOrderDialog } from "./edit-order-dialog"
 
 function OrderStatus({ status }: { status: string }) {
   const statusStyles = {
@@ -85,20 +62,10 @@ export function OrdersTable() {
         if (!response.ok) {
           throw new Error("Failed to fetch orders")
         }
-        const data = await response.json()
-
-        // Map the fetched data to match the Order type
+        const data: DrizzleOrder[] = await response.json()
 
         console.log("Fetched orders data:", data)
-        return data.map((order: any) => ({
-          id: order.id,
-          customer: order.client.name,
-          email: order.client.email,
-          date: new Date(order.createDate).toLocaleDateString(),
-          amount: order.total,
-          status: order.orderStatus,
-          items: order.items.length,
-        }))
+        return data
       } catch (error) {
         toast({
           title: "Error",
@@ -110,16 +77,16 @@ export function OrdersTable() {
     },
   })
 
-  const columns: ColumnDef<Order>[] = [
+  const columns: ColumnDef<DrizzleOrder>[] = [
     {
       accessorKey: "id",
-      header: "Order ID",
+      header: "Orden",
       cell: ({ row }) => (
         <div className="font-medium">#{row.getValue("id")}</div>
       ),
     },
     {
-      accessorKey: "customer",
+      accessorKey: "client.name",
       header: ({ column }) => {
         return (
           <Button
@@ -131,40 +98,44 @@ export function OrdersTable() {
           </Button>
         )
       },
+      cell: ({ row }) => row.original.client!.name,
     },
     {
-      accessorKey: "email",
+      accessorKey: "client.email",
       header: "Email",
+      cell: ({ row }) => row.original.client!.email,
     },
     {
-      accessorKey: "date",
+      accessorKey: "createDate",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Date
+            Fecha
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
       },
+      cell: ({ row }) =>
+        new Date(row.getValue("createDate")).toLocaleDateString(),
     },
     {
-      accessorKey: "amount",
+      accessorKey: "total",
       header: ({ column }) => {
         return (
           <Button
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Amount
+            Monto
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         )
       },
       cell: ({ row }) => {
-        const amount = Number.parseFloat(row.getValue("amount"))
+        const amount = Number.parseFloat(row.getValue("total"))
         const formatted = new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
@@ -175,39 +146,18 @@ export function OrdersTable() {
     {
       accessorKey: "items",
       header: "Items",
+      cell: ({ row }) => row.original.items!.length,
     },
     {
-      accessorKey: "status",
+      accessorKey: "orderStatus",
       header: "Status",
-      cell: ({ row }) => <OrderStatus status={row.getValue("status")} />,
+      cell: ({ row }) => <OrderStatus status={row.getValue("orderStatus")} />,
     },
     {
-      id: "actions",
+      id: "modify",
       cell: ({ row }) => {
         const order = row.original
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(order.id)}
-              >
-                Copy Order ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>View details</DropdownMenuItem>
-              <DropdownMenuItem>Update status</DropdownMenuItem>
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
+        return <EditOrderDialog order={order} />
       },
     },
   ]
@@ -215,7 +165,7 @@ export function OrdersTable() {
   const filteredData =
     statusFilter === "all"
       ? ordersData ?? []
-      : (ordersData ?? []).filter((order) => order.status === statusFilter)
+      : (ordersData ?? []).filter((order) => order.orderStatus === statusFilter)
 
   const table = useReactTable({
     data: filteredData,
@@ -238,7 +188,7 @@ export function OrdersTable() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
+      {/* <div className="flex items-center gap-4">
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Filter by status" />
@@ -251,7 +201,7 @@ export function OrdersTable() {
             <SelectItem value="cancelled">Cancelled</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+      </div> */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
