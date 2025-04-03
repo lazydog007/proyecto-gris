@@ -28,9 +28,6 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleAddToCart = () => {
     if (selectedWeight) {
-      console.log("Adding to cart:" + product.name)
-      console.log("Quantity: " + quantity)
-      console.log("Price: " + selectedWeight.price)
       addItem({
         product: product,
         optionPrice: {

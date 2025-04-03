@@ -84,16 +84,22 @@ export function CartDrawer() {
                   <li key={item.product.id} className="flex space-x-4">
                     <div className="relative h-24 w-24 overflow-hidden rounded-md border">
                       <Image
-                        src={item.product.image || "/ventanita.jpeg"}
+                        src={
+                          "/" + item.product.image + "?height=400&width=400" ||
+                          "/ventanita.jpeg?height=400&width=400" ||
+                          "/placeholder.svg"
+                        }
                         alt={item.product.name}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <div className="flex-1 space-y-1">
-                      <h4 className="font-medium">{item.product.name}</h4>
+                      <h4 className="font-medium">
+                        {item.product.name} - {item.optionPrice?.option}
+                      </h4>
                       <p className="text-sm text-muted-foreground">
-                        ${item.product.price.toFixed(2)}
+                        ${item.optionPrice?.price.toFixed(2)}
                       </p>
                       <div className="flex items-center space-x-2">
                         <Button

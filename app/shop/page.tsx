@@ -4,12 +4,8 @@ import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 import { ProductCard } from "@/components/product-card"
 import { useQuery } from "@tanstack/react-query"
-import { useState } from "react"
 
 export default function ShopsPage() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null)
-  const [showFilters, setShowFilters] = useState(false)
-
   const { data: productsData, isLoading: productsDataLoading } = useQuery({
     queryKey: ["getProductsData"],
     queryFn: async () => {
@@ -28,16 +24,16 @@ export default function ShopsPage() {
     new Set(productsData?.map((product: any) => product.category))
   )
 
-  const filteredProducts = productsData?.filter((product: any) => {
-    if (activeCategory && product.category !== activeCategory) return false
-    return true
-  })
+  // const filteredProducts = productsData?.filter((product: any) => {
+  //   if (activeCategory && product.category !== activeCategory) return false
+  //   return true
+  // })
 
   return (
     <main className="min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="pt-24 pb-16 md:pt-32 md:pb-24">
+      <div className="pt-24 pb-16 md:pt-24 md:pb-24">
         <div className="container">
           <div className="mb-8 text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
@@ -99,7 +95,7 @@ export default function ShopsPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredProducts?.map((product: any) => (
+              {productsData?.map((product: any) => (
                 <div key={product.id} className="relative">
                   <ProductCard product={product} />
                 </div>
@@ -107,7 +103,7 @@ export default function ShopsPage() {
             </div>
           )}
 
-          {filteredProducts?.length === 0 && !productsDataLoading && (
+          {productsData?.length === 0 && !productsDataLoading && (
             <div className="text-center py-12">
               <p className="text-muted-foreground">
                 No products found matching your criteria.
