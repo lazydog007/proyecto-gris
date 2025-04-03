@@ -56,24 +56,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, isClient])
 
-  const addItem = (
-    product: DrizzleProduct,
-    optionPrice: { option: string; price: number },
-    quantity = 1
-  ) => {
+  const addItem = (item: CartItem) => {
     setItems((prevItems) => {
       const existingItem = prevItems.find(
-        (item) => item.product.id === product.id
+        (item) => item.product.id === item.product.id
       )
 
       if (existingItem) {
         return prevItems.map((item) =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
+          item.product.id === item.product.id
+            ? { ...item, quantity: item.quantity + item.quantity }
             : item
         )
       } else {
-        return [...prevItems, { product, optionPrice, quantity }]
+        return [
+          ...prevItems,
+          {
+            product: item.product,
+            optionPrice: item.optionPrice,
+            quantity: item.quantity,
+          },
+        ]
       }
     })
 
@@ -82,6 +85,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const removeItem = (productId: string) => {
+    console.log()
     setItems((prevItems) =>
       prevItems.filter((item) => item.product.id !== productId)
     )

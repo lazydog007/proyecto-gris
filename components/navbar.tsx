@@ -15,7 +15,7 @@ const navItems = [
   { name: "Proyecto Gris", href: "/" },
   // { name: "Ventanita Café", href: "/ventanita" },
   // { name: "Trópico", href: "/tropico" },
-  { name: "La Tiendita", href: "/products" },
+  { name: "La Tiendita", href: "/shop" },
 ]
 
 export default function Navbar() {

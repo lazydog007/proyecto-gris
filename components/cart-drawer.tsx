@@ -17,6 +17,7 @@ import { useEffect, useState } from "react"
 export function CartDrawer() {
   const {
     items,
+    clearCart,
     removeItem,
     updateQuantity,
     isCartOpen,
@@ -50,7 +51,17 @@ export function CartDrawer() {
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-md flex flex-col">
         <SheetHeader>
-          <SheetTitle>Tu Carrito</SheetTitle>
+          <SheetTitle>
+            Tu Carrito
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-7 w-7 ml-auto"
+              onClick={() => clearCart()}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
