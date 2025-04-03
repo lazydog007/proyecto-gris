@@ -18,6 +18,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const [formData, setFormData] = useState(
     initialData || {
@@ -26,6 +27,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
       description: "",
       image: "",
       brand: "ventanita",
+      active: true,
       coffeeDetails: {
         flavorNotes: ["Chocolate", "Caramelo", "Frutos Secos"],
         roastLevel: "Medio",
@@ -139,23 +141,65 @@ export function ProductForm({ initialData }: ProductFormProps) {
       setIsSubmitting(false)
     }
   }
+  const handleUpdate = async () => {
+    if (!initialData?.id) return
 
+    try {
+      setIsUpdating(true)
+      console.log("Updating product data:", formData)
+      const response = await fetch("/api/products/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: initialData.id,
+          updateInfo: formData,
+        }),
+      })
+
+      if (response.ok) {
+        toast({
+          title: "Product updated",
+          description: `Successfully updated ${formData.name}`,
+        })
+        window.location.reload()
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to update the product.",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error("Error updating product:", error)
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      })
+    } finally {
+      setIsUpdating(false)
+    }
+  }
   const handleDelete = async () => {
     if (!initialData?.id) return
 
     try {
       setIsDeleting(true)
-      const response = await fetch(`/api/products/${initialData.id}`, {
-        method: "DELETE",
-      })
+      const response = await fetch(
+        `/api/products/delete?id=${initialData.id}`,
+        {
+          method: "DELETE",
+        }
+      )
 
       if (response.ok) {
         toast({
           title: "Product deleted",
           description: `Successfully deleted ${initialData.name}`,
         })
-        router.push("/dashboard/products")
-        router.refresh()
+        window.location.reload()
       } else {
         toast({
           title: "Error",
@@ -202,6 +246,13 @@ export function ProductForm({ initialData }: ProductFormProps) {
     }))
   }
 
+  const handleToggleActive = () => {
+    setFormData((prev) => ({
+      ...prev,
+      active: !prev.active,
+    }))
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -234,6 +285,20 @@ export function ProductForm({ initialData }: ProductFormProps) {
             placeholder="Categoría"
             required
           />
+        </div>
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Activo</label>
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={formData.active!}
+            onChange={handleToggleActive}
+            id="active-toggle"
+          />
+          <label htmlFor="active-toggle" className="text-sm">
+            {formData.active ? "Activo" : "Inactivo"}
+          </label>
         </div>
       </div>
       <div>
@@ -411,23 +476,25 @@ export function ProductForm({ initialData }: ProductFormProps) {
         </div>
       </div>
       <div className="flex justify-end gap-4">
-        {initialData && (
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "Eliminando..." : "Eliminar Producto"}
+        {initialData ? (
+          <div className="flex flex-row gap-2">
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Eliminando..." : "Eliminar Producto"}
+            </Button>
+            <Button type="button" onClick={handleUpdate} disabled={isUpdating}>
+              {isUpdating ? "Actualizando..." : "Actualizar Producto"}
+            </Button>
+          </div>
+        ) : (
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Creando..." : "Crear Producto"}
           </Button>
         )}
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting
-            ? "Guardando..."
-            : initialData
-            ? "Actualizar Producto"
-            : "Crear Producto"}
-        </Button>
       </div>
     </form>
   )

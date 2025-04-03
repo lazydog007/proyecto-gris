@@ -21,9 +21,9 @@ export async function POST(req: NextRequest) {
       name: formData.name,
       category: formData.category,
       description: formData.description,
-      price: parseFloat(formData.price),
       image: formData.image,
       brand: formData.brand,
+      active: formData.active,
       coffeeDetails: formData.coffeeDetails,
     }
 

@@ -1,33 +1,27 @@
 import { updateProduct } from "@/lib/db/action/products.action"
 import { DrizzleProduct } from "@/lib/db/schema"
-import { getAuth } from "@/lib/get-auth"
 import { NextRequest, NextResponse } from "next/server"
 
 // /api/products/update
 export async function PUT(req: NextRequest) {
   try {
     const requestBody = await req.json()
-    const currentProduct: DrizzleProduct = requestBody.product
-    const updateInfo = requestBody.updateInfo
-    const companyId = requestBody.companyId
+    const productId = requestBody.productId
+    const updateInfo: Partial<DrizzleProduct> = requestBody.updateInfo
 
-    const { user } = await getAuth()
-
-    if (!user) {
-      return NextResponse.json({ error: "unauthorized" }, { status: 401 })
-    }
-
+    // Validate and sanitize the updateInfo object to ensure it matches the schema
     const updatedProduct: Partial<DrizzleProduct> = {
-      storeId: currentProduct.storeId,
       name: updateInfo.name,
-      price: updateInfo.price,
       category: updateInfo.category,
-      currency: updateInfo.currency,
-      favorite: updateInfo.favorite,
-      notes: updateInfo.notes,
+      description: updateInfo.description,
+      price: updateInfo.price,
+      image: updateInfo.image,
+      brand: updateInfo.brand,
+      active: updateInfo.active,
+      coffeeDetails: updateInfo.coffeeDetails,
     }
 
-    await updateProduct(companyId, currentProduct.productId, updatedProduct)
+    await updateProduct(productId, updatedProduct)
 
     return NextResponse.json("Product updated successfully")
   } catch (error) {

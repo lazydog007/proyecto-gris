@@ -1,20 +1,11 @@
 "use client"
 
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import Link from "next/link"
+import { ArrowUpDown } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { DrizzleProduct } from "@/lib/db/schema"
 import { EditProductDialog } from "./edit-product-dialog"
 
@@ -144,44 +135,51 @@ export const columns: ColumnDef<DrizzleProduct>[] = [
   },
   {
     accessorKey: "",
-    header: "Modify",
+    header: "Active",
+    cell: ({ row }) => {
+      const product = row.original
+      return <Badge variant="outline">{product.active ? "Yes" : "No"}</Badge>
+    },
+  },
+  {
+    id: "modify",
     cell: ({ row }) => {
       const product = row.original
       return <EditProductDialog product={product} />
     },
   },
 
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const product = row.original
+  // {
+  //   id: "actions",
+  //   cell: ({ row }) => {
+  //     const product = row.original
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem asChild>
-              <Link href={`/products/${product.id}`}>View details</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/products/${product.id}/edit`}>Edit</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-destructive focus:text-destructive"
-              asChild
-            >
-              <Link href={`/products/${product.id}/delete`}>Delete</Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //           <DropdownMenuItem asChild>
+  //             <Link href={`/products/${product.id}`}>View details</Link>
+  //           </DropdownMenuItem>
+  //           <DropdownMenuItem asChild>
+  //             <Link href={`/products/${product.id}/edit`}>Edit</Link>
+  //           </DropdownMenuItem>
+  //           <DropdownMenuSeparator />
+  //           <DropdownMenuItem
+  //             className="text-destructive focus:text-destructive"
+  //             asChild
+  //           >
+  //             <Link href={`/products/${product.id}/delete`}>Delete</Link>
+  //           </DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     )
+  //   },
+  // },
 ]

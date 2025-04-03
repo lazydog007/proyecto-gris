@@ -1,4 +1,4 @@
-import { doublePrecision, json, pgTable, text } from "drizzle-orm/pg-core"
+import { boolean, json, pgTable, text } from "drizzle-orm/pg-core"
 
 // drizzle-orm
 // drizzle-kit -> provides migration
@@ -24,9 +24,9 @@ export const products = pgTable("products", {
   name: text("name").notNull(),
   category: text("category"),
   description: text("description"),
-  price: doublePrecision("price").notNull(),
   image: text("image"), // image url
   brand: text("brand"),
+  active: boolean("active").default(true),
   coffeeDetails: json("coffee_details").$type<CoffeeDetails>(),
 })
 

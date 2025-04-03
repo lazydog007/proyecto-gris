@@ -35,7 +35,8 @@ export const updateProduct = async (
   return _product
 }
 
-export const deleteProduct = async (companyId: string, productId: string) => {
+export const deleteProduct = async (productId: string) => {
+  console.log("Deleting product with ID:", productId)
   const _product = await db.delete(products).where(eq(products.id, productId))
   return _product
 }
