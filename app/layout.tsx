@@ -11,10 +11,9 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: "Proyecto Gris",
-  description:
-    "Crafting exceptional coffee experiences through our brands Ventanita Café and Trópico",
-  generator: "v0.dev",
+  description: "",
 }
+export const fetchCache = "force-no-store"
 
 export default function RootLayout({
   children,
