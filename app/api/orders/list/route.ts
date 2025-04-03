@@ -2,7 +2,7 @@
 import { getOrders } from "@/lib/db/action/orders.action"
 import { DrizzleOrder } from "@/lib/db/schema"
 import { NextResponse } from "next/server"
-
+export const revalidate = 0
 // /api/orders/list
 export async function GET(): Promise<NextResponse> {
   try {

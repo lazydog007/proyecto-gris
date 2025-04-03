@@ -3,7 +3,7 @@ import { createOrder } from "@/lib/db/action/orders.action"
 import { DrizzleOrder } from "@/lib/db/schema"
 import { CartItem } from "@/lib/types"
 import { NextRequest, NextResponse } from "next/server"
-
+export const revalidate = 0
 // /api/orders/create
 export async function POST(req: NextRequest) {
   try {
