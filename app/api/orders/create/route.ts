@@ -1,4 +1,3 @@
-"use server"
 import { createOrder } from "@/lib/db/action/orders.action"
 import { DrizzleOrder } from "@/lib/db/schema"
 import { CartItem } from "@/lib/types"
