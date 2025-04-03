@@ -53,3 +53,5 @@ export const orders = pgTable("orders", {
     paymentDate: string // ISO string format
   }>(),
 })
+
+export type DrizzleOrder = typeof orders.$inferSelect
