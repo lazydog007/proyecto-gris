@@ -3,6 +3,13 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
 import { DrizzleProduct } from "@/lib/db/schema"
@@ -13,7 +20,18 @@ import { useState } from "react"
 interface ProductFormProps {
   initialData?: DrizzleProduct
 }
-
+const weightOptions = ["100g", "200g", "250g", "340g", "1000g"]
+const grindSizeOptions = [
+  "Grano Entero",
+  "Turco",
+  "Espresso",
+  "Filtradito",
+  "Prensa Francesa",
+  "Cold Brew",
+  "AeroPress",
+  "Greca / Moka Pot",
+  "Drip",
+]
 export function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -463,16 +481,24 @@ export function ProductForm({ initialData }: ProductFormProps) {
               </Badge>
             ))}
           </div>
-          <Input
-            placeholder="Agregar tamaño de molienda"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault()
-                addCustomItem("grindSizes", e.currentTarget.value)
-                e.currentTarget.value = ""
+          <Select
+            onValueChange={(grindSize) => {
+              if (grindSize) {
+                addCustomItem("grindSizes", grindSize)
               }
             }}
-          />
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Seleccionar tamaño de molienda" />
+            </SelectTrigger>
+            <SelectContent>
+              {grindSizeOptions.map((grindSize) => (
+                <SelectItem key={grindSize} value={grindSize}>
+                  {grindSize}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div className="flex justify-end gap-4">

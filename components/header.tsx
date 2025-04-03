@@ -38,7 +38,7 @@ export function Header() {
           href="/dashboard"
           className="flex items-center gap-2 font-semibold"
         >
-          <span className="text-xl">Admin Console</span>
+          <span className="text-xl">Mucuchies Space Station</span>
         </Link>
       </div>
       <div className="ml-auto flex items-center gap-4">

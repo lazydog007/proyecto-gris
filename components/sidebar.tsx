@@ -4,14 +4,7 @@ import type React from "react"
 
 import { useSidebarToggle } from "@/hooks/use-sidebar-toggle"
 import { cn } from "@/lib/utils"
-import {
-  BarChart3,
-  LayoutDashboard,
-  Package,
-  Settings,
-  ShoppingCart,
-  Users,
-} from "lucide-react"
+import { LayoutDashboard, Package, ShoppingCart, Users } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -22,30 +15,30 @@ const sidebarLinks = [
     icon: LayoutDashboard,
   },
   {
-    title: "Orders",
+    title: "Ordenes",
     href: "/dashboard/orders",
     icon: ShoppingCart,
   },
   {
-    title: "Clients",
+    title: "Clientes",
     href: "/dashboard/clients",
     icon: Users,
   },
   {
-    title: "Products",
+    title: "Productos",
     href: "/dashboard/products",
     icon: Package,
   },
-  {
-    title: "Analytics",
-    href: "/dashboard/analytics",
-    icon: BarChart3,
-  },
-  {
-    title: "Settings",
-    href: "/dashboard/settings",
-    icon: Settings,
-  },
+  // {
+  //   title: "Analytics",
+  //   href: "/dashboard/analytics",
+  //   icon: BarChart3,
+  // },
+  // {
+  //   title: "Settings",
+  //   href: "/dashboard/settings",
+  //   icon: Settings,
+  // },
 ]
 
 export function Sidebar() {
