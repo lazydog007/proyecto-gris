@@ -15,7 +15,6 @@ import Link from "next/link"
 import { useState } from "react"
 
 export default function CheckoutPage() {
-  // const router = useRouter()
   const { items, subtotal, clearCart } = useCart()
   const [formData, setFormData] = useState({
     firstName: "",
@@ -38,9 +37,9 @@ export default function CheckoutPage() {
         <div className="pt-24 pb-16 md:pt-32 md:pb-24">
           <div className="container max-w-4xl">
             <div className="bg-white p-8 rounded-lg shadow-sm text-center">
-              <h1 className="text-2xl font-bold mb-4">Tu Carrito esta vacio</h1>
+              <h1 className="text-2xl font-bold mb-4">Tu Carrito está vacío</h1>
               <p className="text-muted-foreground mb-6">
-                Agrega un cafecito a ver que se siente.
+                Agrega un cafecito a ver qué se siente.
               </p>
               <Button asChild>
                 <Link href="/shop">Ver Productos</Link>
@@ -70,9 +69,10 @@ export default function CheckoutPage() {
       items: items.map((item) => ({
         id: item.product.id,
         name: item.product.name,
-        price: item.product.price,
+        option: item.optionPrice?.option,
+        price: item.optionPrice?.price,
         quantity: item.quantity,
-        subtotal: item.product.price * item.quantity,
+        subtotal: (item.optionPrice?.price || 0) * item.quantity,
       })),
       subtotal,
       orderDate: new Date().toISOString(),
@@ -100,14 +100,14 @@ export default function CheckoutPage() {
                 <CheckCircle className="h-16 w-16 text-green-600" />
               </div>
               <h1 className="text-2xl font-bold mb-4">
-                Gracias por tu compra!
+                ¡Gracias por tu compra!
               </h1>
               <p className="text-muted-foreground mb-6">
-                Tu orden ha sido recivida, seras contactado por Whatsapp para
+                Tu orden ha sido recibida, serás contactado por Whatsapp para
                 coordinar el pago.
               </p>
               <Button asChild>
-                <Link href="/shop">Continua Comprando</Link>
+                <Link href="/shop">Continúa Comprando</Link>
               </Button>
             </div>
           </div>
@@ -142,7 +142,11 @@ export default function CheckoutPage() {
                     <div key={item.product.id} className="py-3 flex">
                       <div className="relative h-16 w-16 rounded-md overflow-hidden flex-shrink-0">
                         <Image
-                          src={item.product.image || "/placeholder.svg"}
+                          src={
+                            "/" + item.product.image ||
+                            "/ventanita.jpeg" ||
+                            "/placeholder.svg"
+                          }
                           alt={item.product.name}
                           fill
                           className="object-cover"
@@ -152,13 +156,22 @@ export default function CheckoutPage() {
                         <p className="text-sm font-medium">
                           {item.product.name}
                         </p>
+                        {item.optionPrice && (
+                          <p className="text-sm text-muted-foreground">
+                            {item.optionPrice.option} - $
+                            {item.optionPrice.price.toFixed(2)}
+                          </p>
+                        )}
                         <p className="text-sm text-muted-foreground">
-                          ${item.product.price.toFixed(2)} x {item.quantity}
+                          Cantidad: {item.quantity}
                         </p>
                       </div>
                       <div className="text-right">
                         <p className="font-medium">
-                          ${(item.product.price * item.quantity).toFixed(2)}
+                          $
+                          {(
+                            (item.optionPrice?.price || 0) * item.quantity
+                          ).toFixed(2)}
                         </p>
                       </div>
                     </div>
@@ -169,10 +182,6 @@ export default function CheckoutPage() {
                     <p>Subtotal</p>
                     <p className="font-medium">${subtotal.toFixed(2)}</p>
                   </div>
-                  {/* <div className="flex justify-between mb-2">
-                    <p>Shipping</p>
-                    <p className="font-medium">Calculated at next step</p>
-                  </div> */}
                   <div className="flex justify-between font-bold text-lg mt-4 pt-4 border-t">
                     <p>Total</p>
                     <p>${subtotal.toFixed(2)}</p>
@@ -190,7 +199,7 @@ export default function CheckoutPage() {
                   <div className="space-y-6">
                     <div>
                       <h2 className="text-lg font-medium mb-4">
-                        Informacion de Contacto
+                        Información de Contacto
                       </h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
@@ -225,7 +234,7 @@ export default function CheckoutPage() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="phone">Telefono (Whatsapp)</Label>
+                          <Label htmlFor="phone">Teléfono (Whatsapp)</Label>
                           <Input
                             id="phone"
                             name="phone"
@@ -240,11 +249,11 @@ export default function CheckoutPage() {
 
                     <div>
                       <h2 className="text-lg font-medium mb-4">
-                        Direccion de Envio
+                        Dirección de Envío
                       </h2>
                       <div className="space-y-4">
                         <div className="space-y-2">
-                          <Label htmlFor="address">Direccion</Label>
+                          <Label htmlFor="address">Dirección</Label>
                           <Input
                             id="address"
                             name="address"
@@ -275,7 +284,7 @@ export default function CheckoutPage() {
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label htmlFor="zip">Codigo Postal</Label>
+                            <Label htmlFor="zip">Código Postal</Label>
                             <Input
                               id="zip"
                               name="zip"
@@ -290,10 +299,9 @@ export default function CheckoutPage() {
 
                     <div>
                       <h2 className="text-lg font-medium mb-4">
-                        Informacion Adicional
+                        Información Adicional
                       </h2>
                       <div className="space-y-2">
-                        {/* <Label htmlFor="notes">Order Notes (optional)</Label> */}
                         <Textarea
                           id="notes"
                           name="notes"

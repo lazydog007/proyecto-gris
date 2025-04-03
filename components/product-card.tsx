@@ -181,6 +181,7 @@ export function ProductCard({ product }: ProductCardProps) {
                     ))}
                   </SelectContent>
                 </Select>
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-baseline gap-1">
                     <span className="text-lg font-bold">

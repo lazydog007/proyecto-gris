@@ -88,7 +88,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const removeItem = (productId: string) => {
-    console.log()
     setItems((prevItems) =>
       prevItems.filter((item) => item.product.id !== productId)
     )
@@ -114,9 +113,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0)
 
-  // const subtotal = items.reduce((total, item) => total + item.product.coffeeDetails?.weightPrices. * item.quantity, 0)
-
-  const subtotal = 0 // Placeholder for subtotal calculation
+  // Updated subtotal calculation using optionPrice
+  const subtotal = items.reduce(
+    (total, item) => total + (item.optionPrice?.price || 0) * item.quantity,
+    0
+  )
 
   return (
     <CartContext.Provider
