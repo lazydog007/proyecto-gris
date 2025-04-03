@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { v4 as uuidv4 } from "uuid"
 
 import { useCart } from "@/components/cart-provider"
 import Footer from "@/components/footer"
@@ -17,14 +18,18 @@ import { useState } from "react"
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart()
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
+    client: {
+      name: "Christian",
+      email: "christian@gmail.com",
+      phone: "04123456789",
+    },
+    address: {
+      street: "Avenida Vargas entre carreras 24 y 25",
+      city: "Barquisimeto",
+      state: "Lara",
+      zipCode: "3001",
+      country: "Venezuela", // Default country
+    },
     notes: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -56,37 +61,49 @@ export default function CheckoutPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    const [parent, child] = name.split(".")
+    if (child) {
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: { ...prev[parent], [child]: value },
+      }))
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }))
+    }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
     // Create order object
-    const order = {
-      customer: formData,
-      items: items.map((item) => ({
-        id: item.product.id,
-        name: item.product.name,
-        option: item.optionPrice?.weight,
-        price: item.optionPrice?.price,
-        quantity: item.quantity,
-        subtotal: (item.optionPrice?.price || 0) * item.quantity,
-      })),
-      subtotal,
-      orderDate: new Date().toISOString(),
-    }
 
-    // Log order to console
-    console.log("Order Enviada:", order)
+    try {
+      // Send order to the backend
+      const response = await fetch("/api/orders/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          formData: formData,
+          items: items,
+          subtotal: subtotal,
+        }),
+      })
 
-    // Simulate processing
-    setTimeout(() => {
-      clearCart()
+      if (response.ok) {
+        clearCart()
+        setIsSubmitting(false)
+        setIsSuccess(true)
+      } else {
+        console.error("Failed to create order:", await response.json())
+        setIsSubmitting(false)
+      }
+    } catch (error) {
+      console.error("Error submitting order:", error)
       setIsSubmitting(false)
-      setIsSuccess(true)
-    }, 1500)
+    }
   }
 
   if (isSuccess) {
@@ -112,7 +129,6 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
-        <Footer />
       </main>
     )
   }
@@ -139,7 +155,7 @@ export default function CheckoutPage() {
                 </h2>
                 <div className="divide-y">
                   {items.map((item) => (
-                    <div key={item.product.id} className="py-3 flex">
+                    <div key={uuidv4()} className="py-3 flex">
                       <div className="relative h-16 w-16 rounded-md overflow-hidden flex-shrink-0">
                         <Image
                           src={
@@ -157,10 +173,12 @@ export default function CheckoutPage() {
                           {item.product.name}
                         </p>
                         {item.optionPrice && (
-                          <p className="text-sm text-muted-foreground">
-                            {item.optionPrice.weight} - $
-                            {item.optionPrice.price!.toFixed(2)}
-                          </p>
+                          <div>
+                            <p className="text-sm text-muted-foreground">
+                              {item.optionPrice?.weight} -{" "}
+                              {item.optionPrice?.grind}
+                            </p>
+                          </div>
                         )}
                         <p className="text-sm text-muted-foreground">
                           Cantidad: {item.quantity}
@@ -203,43 +221,35 @@ export default function CheckoutPage() {
                       </h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="firstName">Nombre(s)</Label>
+                          <Label htmlFor="client.name">Nombre Completo</Label>
                           <Input
-                            id="firstName"
-                            name="firstName"
-                            value={formData.firstName}
+                            id="client.name"
+                            name="client.name"
+                            value={formData.client.name}
                             onChange={handleChange}
                             required
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="lastName">Apellido(s)</Label>
+                          <Label htmlFor="client.email">Email</Label>
                           <Input
-                            id="lastName"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            required
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="email">Email</Label>
-                          <Input
-                            id="email"
-                            name="email"
+                            id="client.email"
+                            name="client.email"
                             type="email"
-                            value={formData.email}
+                            value={formData.client.email}
                             onChange={handleChange}
                             required
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="phone">Teléfono (Whatsapp)</Label>
+                          <Label htmlFor="client.phone">
+                            Teléfono (Whatsapp)
+                          </Label>
                           <Input
-                            id="phone"
-                            name="phone"
+                            id="client.phone"
+                            name="client.phone"
                             type="tel"
-                            value={formData.phone}
+                            value={formData.client.phone}
                             onChange={handleChange}
                             required
                           />
@@ -252,43 +262,58 @@ export default function CheckoutPage() {
                         Dirección de Envío
                       </h2>
                       <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="address">Dirección</Label>
-                          <Input
-                            id="address"
-                            name="address"
-                            value={formData.address}
-                            onChange={handleChange}
-                            required
-                          />
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="space-y-2 cols-span-1 md:col-span-1">
+                            <Label htmlFor="address.street">Pais</Label>
+                            <Input
+                              id="address.country"
+                              name="address.country"
+                              value={formData.address.country}
+                              onChange={handleChange}
+                              disabled={true}
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2 cols-span-1 md:col-span-2">
+                            <Label htmlFor="address.street">Dirección</Label>
+                            <Input
+                              id="address.street"
+                              name="address.street"
+                              value={formData.address.street}
+                              onChange={handleChange}
+                              required
+                            />
+                          </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div className="space-y-2">
-                            <Label htmlFor="city">Ciudad</Label>
+                            <Label htmlFor="address.city">Ciudad</Label>
                             <Input
-                              id="city"
-                              name="city"
-                              value={formData.city}
+                              id="address.city"
+                              name="address.city"
+                              value={formData.address.city}
                               onChange={handleChange}
                               required
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label htmlFor="state">Estado</Label>
+                            <Label htmlFor="address.state">Estado</Label>
                             <Input
-                              id="state"
-                              name="state"
-                              value={formData.state}
+                              id="address.state"
+                              name="address.state"
+                              value={formData.address.state}
                               onChange={handleChange}
                               required
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label htmlFor="zip">Código Postal</Label>
+                            <Label htmlFor="address.zipCode">
+                              Código Postal
+                            </Label>
                             <Input
-                              id="zip"
-                              name="zip"
-                              value={formData.zip}
+                              id="address.zipCode"
+                              name="address.zipCode"
+                              value={formData.address.zipCode}
                               onChange={handleChange}
                               required
                             />
