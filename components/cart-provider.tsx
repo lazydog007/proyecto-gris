@@ -1,16 +1,22 @@
 "use client"
 
-import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import type { Product } from "@/lib/products"
+import { DrizzleProduct } from "@/lib/db/schema"
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react"
 
 export type CartItem = {
-  product: Product
+  product: DrizzleProduct
   quantity: number
 }
 
 type CartContextType = {
   items: CartItem[]
-  addItem: (product: Product, quantity?: number) => void
+  addItem: (product: DrizzleProduct, quantity?: number) => void
   removeItem: (productId: string) => void
   updateQuantity: (productId: string, quantity: number) => void
   clearCart: () => void
@@ -49,13 +55,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, isClient])
 
-  const addItem = (product: Product, quantity = 1) => {
+  const addItem = (product: DrizzleProduct, quantity = 1) => {
     setItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.product.id === product.id)
+      const existingItem = prevItems.find(
+        (item) => item.product.id === product.id
+      )
 
       if (existingItem) {
         return prevItems.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + quantity } : item,
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
         )
       } else {
         return [...prevItems, { product, quantity }]
@@ -67,7 +77,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }
 
   const removeItem = (productId: string) => {
-    setItems((prevItems) => prevItems.filter((item) => item.product.id !== productId))
+    setItems((prevItems) =>
+      prevItems.filter((item) => item.product.id !== productId)
+    )
   }
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -76,7 +88,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return
     }
 
-    setItems((prevItems) => prevItems.map((item) => (item.product.id === productId ? { ...item, quantity } : item)))
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.product.id === productId ? { ...item, quantity } : item
+      )
+    )
   }
 
   const clearCart = () => {
@@ -86,7 +102,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0)
 
-  const subtotal = items.reduce((total, item) => total + item.product.price * item.quantity, 0)
+  // const subtotal = items.reduce((total, item) => total + item.product.coffeeDetails?.weightPrices. * item.quantity, 0)
+
+  const subtotal = 0 // Placeholder for subtotal calculation
 
   return (
     <CartContext.Provider
@@ -114,4 +132,3 @@ export function useCart() {
   }
   return context
 }
-

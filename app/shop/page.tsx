@@ -3,25 +3,34 @@
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 import { ProductCard } from "@/components/product-card"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { getCategories, products } from "@/lib/products"
+import { useQuery } from "@tanstack/react-query"
 import { Filter } from "lucide-react"
 import { useState } from "react"
 
 export default function ShopsPage() {
-  const [activeTab, setActiveTab] = useState<"all" | "ventanita" | "tropico">(
-    "all"
-  )
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [showFilters, setShowFilters] = useState(false)
 
-  const ventanitaCategories = getCategories("ventanita")
-  const tropicoCategories = getCategories("tropico")
+  const { data: productsData, isLoading: productsDataLoading } = useQuery({
+    queryKey: ["getProductsData"],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`/api/products/list`, {
+          cache: "no-store",
+        })
+        return response.json()
+      } catch (error) {
+        throw error
+      }
+    },
+  })
 
-  const filteredProducts = products.filter((product) => {
-    if (activeTab !== "all" && product.brand !== activeTab) return false
+  const categories = Array.from(
+    new Set(productsData?.map((product: any) => product.category))
+  )
+
+  const filteredProducts = productsData?.filter((product: any) => {
     if (activeCategory && product.category !== activeCategory) return false
     return true
   })
@@ -37,27 +46,12 @@ export default function ShopsPage() {
               "LA TIENDITA"
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Discover our selection of premium coffee and branded merchandise
-              from Ventanita Café and Trópico.
+              Discover our selection of premium coffee and branded merchandise.
             </p>
           </div>
 
-          <Tabs
-            defaultValue="all"
-            value={activeTab}
-            onValueChange={(value) => {
-              setActiveTab(value as "all" | "ventanita" | "tropico")
-              setActiveCategory(null)
-            }}
-            className="mb-8"
-          >
+          <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
-              <TabsList>
-                <TabsTrigger value="all">All Products</TabsTrigger>
-                <TabsTrigger value="ventanita">Ventanita</TabsTrigger>
-                <TabsTrigger value="tropico">Trópico</TabsTrigger>
-              </TabsList>
-
               <Button
                 variant="outline"
                 size="sm"
@@ -83,90 +77,45 @@ export default function ShopsPage() {
                 All Categories
               </Button>
 
-              <TabsContent value="all" className="m-0">
-                <div className="flex flex-wrap">
-                  {[...ventanitaCategories, ...tropicoCategories].map(
-                    (category) => (
-                      <Button
-                        key={category}
-                        variant={
-                          activeCategory === category ? "default" : "outline"
-                        }
-                        size="sm"
-                        onClick={() => setActiveCategory(category)}
-                        className="mr-2 mb-2"
-                      >
-                        {category}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="ventanita" className="m-0">
-                <div className="flex flex-wrap">
-                  {ventanitaCategories.map((category) => (
-                    <Button
-                      key={category}
-                      variant={
-                        activeCategory === category ? "default" : "outline"
-                      }
-                      size="sm"
-                      onClick={() => setActiveCategory(category)}
-                      className="mr-2 mb-2"
-                    >
-                      {category}
-                    </Button>
-                  ))}
-                </div>
-              </TabsContent>
-
-              <TabsContent value="tropico" className="m-0">
-                <div className="flex flex-wrap">
-                  {tropicoCategories.map((category) => (
-                    <Button
-                      key={category}
-                      variant={
-                        activeCategory === category ? "default" : "outline"
-                      }
-                      size="sm"
-                      onClick={() => setActiveCategory(category)}
-                      className="mr-2 mb-2"
-                    >
-                      {category}
-                    </Button>
-                  ))}
-                </div>
-              </TabsContent>
+              <div className="flex flex-wrap">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={
+                      activeCategory === category ? "default" : "outline"
+                    }
+                    size="sm"
+                    onClick={() => setActiveCategory(category)}
+                    className="mr-2 mb-2"
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
             </div>
+          </div>
 
+          {productsDataLoading ? (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">Loading products...</p>
+            </div>
+          ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredProducts.map((product) => (
+              {filteredProducts?.map((product: any) => (
                 <div key={product.id} className="relative">
-                  {activeTab === "all" && (
-                    <Badge
-                      className={`absolute top-2 right-2 z-10 ${
-                        product.brand === "ventanita"
-                          ? "bg-green-600"
-                          : "bg-black"
-                      }`}
-                    >
-                      {product.brand === "ventanita" ? "Ventanita" : "Trópico"}
-                    </Badge>
-                  )}
                   <ProductCard product={product} />
                 </div>
               ))}
             </div>
+          )}
 
-            {filteredProducts.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">
-                  No products found matching your criteria.
-                </p>
-              </div>
-            )}
-          </Tabs>
+          {filteredProducts?.length === 0 && !productsDataLoading && (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground">
+                No products found matching your criteria.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
