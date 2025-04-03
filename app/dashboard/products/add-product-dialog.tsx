@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -28,7 +27,6 @@ export function AddProductDialog() {
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nuevo Producto</DialogTitle>
-          <DialogDescription>Completa este formulario</DialogDescription>
         </DialogHeader>
         <ProductForm />
       </DialogContent>

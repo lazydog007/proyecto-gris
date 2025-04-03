@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -27,8 +26,7 @@ export function EditProductDialog({ product }: EditProductDialogProps) {
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Nuevo Producto</DialogTitle>
-          <DialogDescription>Completa este formulario</DialogDescription>
+          <DialogTitle>Modifica el Producto</DialogTitle>
         </DialogHeader>
         <ProductForm initialData={product} />
       </DialogContent>

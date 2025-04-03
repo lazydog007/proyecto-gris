@@ -304,19 +304,19 @@ export function ProductForm({ initialData }: ProductFormProps) {
             required
           />
         </div>
-      </div>
-      <div>
-        <label className="block text-sm font-medium">Activo</label>
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={formData.active!}
-            onChange={handleToggleActive}
-            id="active-toggle"
-          />
-          <label htmlFor="active-toggle" className="text-sm">
-            {formData.active ? "Activo" : "Inactivo"}
-          </label>
+        <div>
+          <label className="block text-sm font-medium">Activo</label>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={formData.active!}
+              onChange={handleToggleActive}
+              id="active-toggle"
+            />
+            <label htmlFor="active-toggle" className="text-sm">
+              {formData.active ? "Activo" : "Inactivo"}
+            </label>
+          </div>
         </div>
       </div>
       <div>
