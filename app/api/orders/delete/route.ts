@@ -1,3 +1,4 @@
+"use server"
 import { deleteOrder } from "@/lib/db/action/orders.action"
 import { NextRequest, NextResponse } from "next/server"
 

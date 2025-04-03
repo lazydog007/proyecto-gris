@@ -1,3 +1,4 @@
+"use server"
 import { updateProduct } from "@/lib/db/action/products.action"
 import { DrizzleProduct } from "@/lib/db/schema"
 import { NextRequest, NextResponse } from "next/server"

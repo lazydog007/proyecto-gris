@@ -1,3 +1,4 @@
+"use server"
 import { updateOrder } from "@/lib/db/action/orders.action"
 import { DrizzleOrder } from "@/lib/db/schema"
 import { NextRequest, NextResponse } from "next/server"

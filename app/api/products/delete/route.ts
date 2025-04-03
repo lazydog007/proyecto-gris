@@ -1,3 +1,4 @@
+"use server"
 import { deleteProduct } from "@/lib/db/action/products.action"
 import { NextRequest, NextResponse } from "next/server"
 
