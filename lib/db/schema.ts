@@ -1,4 +1,5 @@
 import { boolean, json, pgTable, text } from "drizzle-orm/pg-core"
+import { CartItem } from "../../components/cart-provider"
 
 // drizzle-orm
 // drizzle-kit -> provides migration
@@ -32,3 +33,23 @@ export const products = pgTable("products", {
 })
 
 export type DrizzleProduct = typeof products.$inferSelect
+
+export const orders = pgTable("orders", {
+  id: text("id").primaryKey(),
+  createDate: text("create_date").notNull(), // ISO string format
+  updateDate: text("update_date"), // ISO string format
+  items: json("items").$type<CartItem[]>(), // Array of CartItem
+  subtotal: text("subtotal").notNull(), // Store as string to handle currency precision
+  total: text("total").notNull(), // Store as string to handle currency precision
+  client: text("client").notNull(), // Client identifier
+  address: text("address").notNull(), // Shipping address
+  orderStatus: text("order_status").notNull(), // e.g., "pending", "shipped", "delivered"
+  courier: text("courier"), // Courier name
+  trackingNumber: text("tracking_number"), // Tracking number for the shipment
+  payment: json("payment").$type<{
+    paymentMethod: string // e.g., "credit_card", "paypal"
+    paymentName: string // Name on the payment method
+    paymentStatus: string // e.g., "paid", "pending", "failed"
+    paymentDate: string // ISO string format
+  }>(),
+})

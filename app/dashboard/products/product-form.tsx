@@ -13,6 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
 import { DrizzleProduct } from "@/lib/db/schema"
+import { grindSizeOptions } from "@/lib/types"
 import { X } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -20,18 +21,7 @@ import { useState } from "react"
 interface ProductFormProps {
   initialData?: DrizzleProduct
 }
-const weightOptions = ["100g", "200g", "250g", "340g", "1000g"]
-const grindSizeOptions = [
-  "Grano Entero",
-  "Turco",
-  "Espresso",
-  "Filtradito",
-  "Prensa Francesa",
-  "Cold Brew",
-  "AeroPress",
-  "Greca / Moka Pot",
-  "Drip",
-]
+
 export function ProductForm({ initialData }: ProductFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)

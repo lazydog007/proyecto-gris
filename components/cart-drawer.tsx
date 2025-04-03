@@ -95,11 +95,12 @@ export function CartDrawer() {
                       />
                     </div>
                     <div className="flex-1 space-y-1">
-                      <h4 className="font-medium">
-                        {item.product.name} - {item.optionPrice?.option}
-                      </h4>
+                      <h4 className="font-medium">{item.product.name}</h4>
                       <p className="text-sm text-muted-foreground">
-                        ${item.optionPrice?.price.toFixed(2)}
+                        {item.optionPrice?.weight} - {item.optionPrice?.grind}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        ${item.optionPrice?.price!.toFixed(2)}
                       </p>
                       <div className="flex items-center space-x-2">
                         <Button

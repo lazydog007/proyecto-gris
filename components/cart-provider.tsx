@@ -1,6 +1,6 @@
 "use client"
 
-import { DrizzleProduct } from "@/lib/db/schema"
+import { CartItem } from "@/lib/types"
 import {
   createContext,
   useContext,
@@ -8,12 +8,6 @@ import {
   useState,
   type ReactNode,
 } from "react"
-
-export type CartItem = {
-  product: DrizzleProduct
-  optionPrice?: { option: string; price: number }
-  quantity: number
-}
 
 type CartContextType = {
   items: CartItem[]
@@ -61,13 +55,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const existingItem = prevItems.find(
         (prevItem) =>
           prevItem.product.id === item.product.id &&
-          prevItem.optionPrice?.option === item.optionPrice?.option
+          prevItem.optionPrice?.weight === item.optionPrice?.weight
       )
 
       if (existingItem) {
         return prevItems.map((prevItem) =>
           prevItem.product.id === item.product.id &&
-          prevItem.optionPrice?.option === item.optionPrice?.option
+          prevItem.optionPrice?.weight === item.optionPrice?.weight
             ? { ...prevItem, quantity: prevItem.quantity + item.quantity }
             : prevItem
         )

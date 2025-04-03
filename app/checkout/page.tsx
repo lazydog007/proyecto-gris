@@ -69,7 +69,7 @@ export default function CheckoutPage() {
       items: items.map((item) => ({
         id: item.product.id,
         name: item.product.name,
-        option: item.optionPrice?.option,
+        option: item.optionPrice?.weight,
         price: item.optionPrice?.price,
         quantity: item.quantity,
         subtotal: (item.optionPrice?.price || 0) * item.quantity,
@@ -158,8 +158,8 @@ export default function CheckoutPage() {
                         </p>
                         {item.optionPrice && (
                           <p className="text-sm text-muted-foreground">
-                            {item.optionPrice.option} - $
-                            {item.optionPrice.price.toFixed(2)}
+                            {item.optionPrice.weight} - $
+                            {item.optionPrice.price!.toFixed(2)}
                           </p>
                         )}
                         <p className="text-sm text-muted-foreground">

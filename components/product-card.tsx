@@ -24,6 +24,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const [selectedWeight, setSelectedWeight] = useState(
     product.coffeeDetails?.weightPrices?.[0] || null
   )
+  const [selectedGrindSize, setSelectedGrindSize] = useState(
+    product.coffeeDetails?.grindSizes?.[0] || null
+  )
   const [quantity, setQuantity] = useState(1)
 
   const handleAddToCart = () => {
@@ -31,8 +34,9 @@ export function ProductCard({ product }: ProductCardProps) {
       addItem({
         product: product,
         optionPrice: {
-          option: selectedWeight.weight,
+          weight: selectedWeight.weight,
           price: selectedWeight.price,
+          grind: selectedGrindSize, // Selected grind size
         },
         quantity,
       })
@@ -41,7 +45,6 @@ export function ProductCard({ product }: ProductCardProps) {
 
   // Function to determine roast level color
   const getRoastLevelColor = (level: string) => {
-    console.log(level)
     switch (level?.toLowerCase()) {
       case "ligero":
         return "bg-amber-200"
@@ -59,15 +62,6 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="overflow-hidden h-full flex flex-col border-0 shadow-md hover:shadow-lg transition-all duration-300 group">
       <div className="relative">
-        {/* New arrival badge */}
-        {/* {product.isNew && (
-          <Badge className="absolute top-3 left-3 z-10 bg-emerald-600 hover:bg-emerald-700">
-            Nuevo
-          </Badge>
-        )} */}
-
-        {/* Quick view button */}
-
         <div className="relative aspect-square overflow-hidden">
           <Image
             src={
@@ -106,7 +100,6 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
             )}
           </div>
-          {/* Flavor notes pills */}
           {product.coffeeDetails?.flavorNotes &&
             product.coffeeDetails.flavorNotes.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-1">
@@ -122,7 +115,6 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
         </div>
 
-        {/* Expandable details */}
         {product.category === "Cafe" && product.coffeeDetails && (
           <div className="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 gap-2 text-sm animate-in fade-in duration-200">
             {product.coffeeDetails.region && (
@@ -182,7 +174,26 @@ export function ProductCard({ product }: ProductCardProps) {
                   </SelectContent>
                 </Select>
 
-                <div className="flex items-center justify-between">
+                <div className="mt-4">
+                  {/* <p className="text-sm font-medium mb-2">Seleccionar Molido</p> */}
+                  <Select
+                    value={selectedGrindSize}
+                    onValueChange={(value) => setSelectedGrindSize(value)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Molienda" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {product.coffeeDetails.grindSizes.map((grind, idx) => (
+                        <SelectItem key={idx} value={grind}>
+                          {grind}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex items-center justify-between mt-4">
                   <div className="flex items-baseline gap-1">
                     <span className="text-lg font-bold">
                       ${selectedWeight?.price.toFixed(2)}
@@ -225,7 +236,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <Button
           className="w-full mt-4 hover:bg-amber-900 text-white"
           onClick={handleAddToCart}
-          disabled={!selectedWeight}
+          disabled={!selectedWeight || !selectedGrindSize}
         >
           <ShoppingCart className="h-4 w-4 mr-2" />
           Agregar al Carrito
