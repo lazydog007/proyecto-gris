@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
         optionPrice: {
           weight: selectedWeight.weight,
           price: selectedWeight.price,
-          grind: selectedGrindSize, // Selected grind size
+          grind: selectedGrindSize!, // Selected grind size
         },
         quantity,
       })
@@ -175,9 +175,8 @@ export function ProductCard({ product }: ProductCardProps) {
                 </Select>
 
                 <div className="mt-4">
-                  {/* <p className="text-sm font-medium mb-2">Seleccionar Molido</p> */}
                   <Select
-                    value={selectedGrindSize}
+                    value={selectedGrindSize!}
                     onValueChange={(value) => setSelectedGrindSize(value)}
                   >
                     <SelectTrigger className="w-full">

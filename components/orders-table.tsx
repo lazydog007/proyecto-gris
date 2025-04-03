@@ -50,7 +50,7 @@ function OrderStatus({ status }: { status: string }) {
 export function OrdersTable() {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [statusFilter, setStatusFilter] = useState<string>("all")
+  // const [statusFilter, setStatusFilter] = useState<string>("all")
 
   const { data: ordersData, isLoading } = useQuery({
     queryKey: ["getOrdersData"],
@@ -162,13 +162,8 @@ export function OrdersTable() {
     },
   ]
 
-  const filteredData =
-    statusFilter === "all"
-      ? ordersData ?? []
-      : (ordersData ?? []).filter((order) => order.orderStatus === statusFilter)
-
   const table = useReactTable({
-    data: filteredData,
+    data: ordersData ?? [],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

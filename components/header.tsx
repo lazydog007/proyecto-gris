@@ -32,6 +32,7 @@ export function Header() {
       <div className="flex items-center gap-4 md:gap-6">
         <Button variant="ghost" size="icon" onClick={toggle} className="mr-2">
           <Menu className="h-5 w-5" />
+          {isOpen}
           <span className="sr-only">Toggle sidebar</span>
         </Button>
         <Link

@@ -13,6 +13,16 @@ export const grindSizeOptions = [
   // "Drip",
 ]
 
+export const roastLevels = [
+  "Ligero",
+  "Medio",
+  "Medio oscuro",
+  "Oscuro",
+  "Espresso italiano",
+]
+
+export const processingMethods = ["Lavado", "Natural", "Honey", "Fermentado"]
+
 export type CartItem = {
   product: DrizzleProduct
   optionPrice?: { weight?: string; price?: number; grind?: string }

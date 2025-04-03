@@ -21,16 +21,6 @@ export function OrderForm({ initialData }: OrderFormProps) {
   const [formData, setFormData] = useState(initialData)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
   const handleNestedChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     parent: "client" | "address" | "payment"
@@ -114,7 +104,6 @@ export function OrderForm({ initialData }: OrderFormProps) {
           </Select>
         </div>
       </div>
-
       <div>
         <label className="block text-sm font-medium">
           Información del Cliente
@@ -151,7 +140,6 @@ export function OrderForm({ initialData }: OrderFormProps) {
           </div>
         </div>
       </div>
-
       <div>
         <label className="block text-sm font-medium">Dirección de Envío</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,7 +190,6 @@ export function OrderForm({ initialData }: OrderFormProps) {
           </div>
         </div>
       </div>
-
       <div>
         <label className="block text-sm font-medium">
           Artículos de la Orden
@@ -226,14 +213,13 @@ export function OrderForm({ initialData }: OrderFormProps) {
                 </p>
                 <p className="text-sm font-medium">
                   Subtotal: $
-                  {(item.quantity * item.optionPrice?.price!).toFixed(2)}
+                  {(item.quantity * (item.optionPrice?.price ?? 0)).toFixed(2)}
                 </p>
               </div>
             </div>
           ))}
         </div>
       </div>
-
       <div>
         <label className="block text-sm font-medium">Información de Pago</label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -287,7 +273,6 @@ export function OrderForm({ initialData }: OrderFormProps) {
           </div>
         </div>
       </div>
-
       <div className="flex justify-end">
         <Button type="button" onClick={handleUpdate} disabled={isUpdating}>
           {isUpdating ? "Actualizando..." : "Actualizar Orden"}

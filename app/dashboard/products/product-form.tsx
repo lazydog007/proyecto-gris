@@ -13,9 +13,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
 import { DrizzleProduct } from "@/lib/db/schema"
-import { grindSizeOptions } from "@/lib/types"
+import { grindSizeOptions, processingMethods, roastLevels } from "@/lib/types"
 import { X } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 interface ProductFormProps {
@@ -23,18 +22,17 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ initialData }: ProductFormProps) {
-  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
 
   const [formData, setFormData] = useState(
     initialData || {
-      name: "Cafe Ventanita Tolva",
+      name: "",
       category: "Cafe",
       description: "",
       image: "",
-      brand: "ventanita",
+      brand: "",
       active: true,
       coffeeDetails: {
         flavorNotes: ["Chocolate", "Caramelo", "Frutos Secos"],
@@ -262,6 +260,8 @@ export function ProductForm({ initialData }: ProductFormProps) {
     }))
   }
 
+  // ...existing code...
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -287,13 +287,19 @@ export function ProductForm({ initialData }: ProductFormProps) {
         </div>
         <div>
           <label className="block text-sm font-medium">Categoría</label>
-          <Input
-            name="category"
+          <Select
+            onValueChange={(value) =>
+              setFormData((prev) => ({ ...prev, category: value }))
+            }
             value={formData.category!}
-            onChange={handleChange}
-            placeholder="Categoría"
-            required
-          />
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Seleccionar categoría" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Cafe">Café</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <label className="block text-sm font-medium">Activo</label>
@@ -311,6 +317,16 @@ export function ProductForm({ initialData }: ProductFormProps) {
         </div>
       </div>
       <div>
+        <label className="block text-sm font-medium">Archivo de Imagen</label>
+        <Input
+          name="image"
+          value={formData.image!}
+          onChange={handleChange}
+          placeholder="Imagen"
+          required
+        />
+      </div>
+      <div>
         <label className="block text-sm font-medium">Descripción</label>
         <Textarea
           name="description"
@@ -322,27 +338,45 @@ export function ProductForm({ initialData }: ProductFormProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium">Nivel de tueste</label>
-          <Input
-            name="roastLevel"
-            value={formData.coffeeDetails!.roastLevel}
-            onChange={(e) =>
-              handleCoffeeDetailsChange("roastLevel", e.target.value)
+          <Select
+            onValueChange={(value) =>
+              handleCoffeeDetailsChange("roastLevel", value)
             }
-            placeholder="Nivel de tueste"
-          />
+            value={formData.coffeeDetails!.roastLevel}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Seleccionar nivel de tueste" />
+            </SelectTrigger>
+            <SelectContent>
+              {roastLevels.map((level) => (
+                <SelectItem key={level} value={level}>
+                  {level}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <label className="block text-sm font-medium">
             Método de procesamiento
           </label>
-          <Input
-            name="processingMethod"
-            value={formData.coffeeDetails!.processingMethod}
-            onChange={(e) =>
-              handleCoffeeDetailsChange("processingMethod", e.target.value)
+          <Select
+            onValueChange={(value) =>
+              handleCoffeeDetailsChange("processingMethod", value)
             }
-            placeholder="Método de procesamiento"
-          />
+            value={formData.coffeeDetails!.processingMethod}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Seleccionar método de procesamiento" />
+            </SelectTrigger>
+            <SelectContent>
+              {processingMethods.map((method) => (
+                <SelectItem key={method} value={method}>
+                  {method}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <label className="block text-sm font-medium">Variedad</label>

@@ -15,9 +15,25 @@ import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
+interface FormData {
+  client: {
+    name: string
+    email: string
+    phone: string
+  }
+  address: {
+    street: string
+    city: string
+    state: string
+    zipCode: string
+    country: string
+  }
+  notes: string
+}
+
 export default function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart()
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     client: {
       name: "Christian",
       email: "christian@gmail.com",
@@ -61,11 +77,16 @@ export default function CheckoutPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target
-    const [parent, child] = name.split(".")
+    const [parent, child] = name.split(".") as [keyof FormData, string]
     if (child) {
       setFormData((prev) => ({
         ...prev,
-        [parent]: { ...prev[parent], [child]: value },
+        [parent]: {
+          ...(typeof prev[parent] === "object" && prev[parent] !== null
+            ? prev[parent]
+            : {}),
+          [child]: value,
+        },
       }))
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
@@ -76,10 +97,7 @@ export default function CheckoutPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Create order object
-
     try {
-      // Send order to the backend
       const response = await fetch("/api/orders/create", {
         method: "POST",
         headers: {

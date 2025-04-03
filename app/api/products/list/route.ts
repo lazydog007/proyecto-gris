@@ -1,10 +1,10 @@
 import { getProducts } from "@/lib/db/action/products.action"
 import { DrizzleProduct } from "@/lib/db/schema"
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   try {
-    let products: DrizzleProduct[] = await getProducts()
+    const products: DrizzleProduct[] = await getProducts()
 
     return NextResponse.json(products!)
   } catch (error) {

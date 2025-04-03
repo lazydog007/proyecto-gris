@@ -14,7 +14,6 @@ export async function PUT(req: NextRequest) {
       name: updateInfo.name,
       category: updateInfo.category,
       description: updateInfo.description,
-      price: updateInfo.price,
       image: updateInfo.image,
       brand: updateInfo.brand,
       active: updateInfo.active,
