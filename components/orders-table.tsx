@@ -119,7 +119,7 @@ export function OrdersTable() {
         )
       },
       cell: ({ row }) =>
-        new Date(row.getValue("createDate")).toLocaleDateString(),
+        new Date(row.getValue("createDate")).toLocaleDateString("es-Es"),
     },
     {
       accessorKey: "total",
