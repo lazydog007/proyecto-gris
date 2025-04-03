@@ -11,21 +11,11 @@ export async function POST(req: NextRequest) {
     const items: CartItem[] = requestBody.items
     const subtotal = requestBody.subtotal
 
-    console.log("Form data received:", formData)
-
     console.log("Form data:", formData)
     const order: DrizzleOrder = {
       id: crypto.randomUUID(),
       createDate: new Date().toISOString(),
       updateDate: null,
-      // items: items.map((item) => ({
-      //   id: item.product.id,
-      //   name: item.product.name,
-      //   option: item.optionPrice?.weight,
-      //   price: item.optionPrice?.price,
-      //   quantity: item.quantity,
-      //   subtotal: (item.optionPrice?.price || 0) * item.quantity,
-      // })),
       items: items.map((item) => ({
         product: item.product,
         optionPrice: item.optionPrice,
@@ -45,8 +35,6 @@ export async function POST(req: NextRequest) {
         paymentDate: new Date().toISOString(),
       },
     }
-
-    console.log("Order to be created:", order)
 
     await createOrder(order)
 

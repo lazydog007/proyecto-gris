@@ -1,4 +1,4 @@
-import { getOrdersByStatus } from "@/lib/db/action/orders.action"
+import { getOrders } from "@/lib/db/action/orders.action"
 import { DrizzleOrder } from "@/lib/db/schema"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -8,7 +8,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     const { searchParams } = new URL(req.url)
     const orderStatus = searchParams.get("status") // Optional filter by status
 
-    let orders: DrizzleOrder[] = await getOrdersByStatus(orderStatus!)
+    let orders: DrizzleOrder[] = await getOrders()
 
     return NextResponse.json(orders)
   } catch (error) {
