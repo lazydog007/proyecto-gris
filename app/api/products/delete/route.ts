@@ -1,8 +1,9 @@
-"use server"
 import { deleteProduct } from "@/lib/db/action/products.action"
 import { NextRequest, NextResponse } from "next/server"
 
 // /api/products/delete
+export const revalidate = 0
+
 export async function DELETE(req: NextRequest) {
   try {
     // Check if user is logged in

@@ -1,10 +1,10 @@
-"use server"
 import { createProduct } from "@/lib/db/action/products.action"
 import { DrizzleProduct } from "@/lib/db/schema"
 import { NextRequest, NextResponse } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
 // /api/products/create
+export const revalidate = 0
 export async function POST(req: NextRequest) {
   try {
     // const { user } = await getAuth()

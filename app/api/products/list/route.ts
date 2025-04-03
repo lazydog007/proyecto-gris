@@ -1,8 +1,9 @@
-"use server"
 import { getProducts } from "@/lib/db/action/products.action"
 import { DrizzleProduct } from "@/lib/db/schema"
 import { NextResponse } from "next/server"
 
+// /api/products/list
+export const revalidate = 0
 export async function GET(): Promise<NextResponse> {
   try {
     const products: DrizzleProduct[] = await getProducts()

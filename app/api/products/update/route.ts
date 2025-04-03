@@ -1,9 +1,9 @@
-"use server"
 import { updateProduct } from "@/lib/db/action/products.action"
 import { DrizzleProduct } from "@/lib/db/schema"
 import { NextRequest, NextResponse } from "next/server"
 
 // /api/products/update
+export const revalidate = 0
 export async function PUT(req: NextRequest) {
   try {
     const requestBody = await req.json()
